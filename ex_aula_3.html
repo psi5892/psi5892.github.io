@@ -222,9 +222,9 @@ $$
 <p>Considere o diagrama da <a href="#fig-filtro-adaptativo" class="quarto-xref">Figura&nbsp;1</a>, para o qual valem as seguintes definições:</p>
 <ul>
 <li><span class="math inline">\(s(n)\)</span> é o sinal que se deseja medir, após eliminada a interferência. Assuma que <span class="math inline">\(s(n)\)</span> é um ruído branco, Gaussiano, de média nula e variância <span class="math inline">\(\sigma_s^2=0,\hspace{-0.15ex}01\)</span>;</li>
-<li>a interferência que se deseja eliminar é dada por <span class="math inline">\(x(n)={\rm sen}(2\pi n/10+\pi/6+\phi_v)\)</span>, sendo <span class="math inline">\(\phi_v\)</span> uma variável aleatória distribuída uniformemente entre 0 e <span class="math inline">\(2\pi\)</span>;</li>
-<li><span class="math inline">\(u(n)\)</span> é um sinal correlacionado com a interferência, dado por <span class="math inline">\(u(n)=5{\rm sen}(2\pi n/10+\phi_u)\)</span> com <span class="math inline">\(\phi_u=\phi_v\)</span>;</li>
-<li><span class="math inline">\(d(n)=s(n)+x(n)\)</span> é a resposta desejada para o filtro adaptativo;</li>
+<li>a interferência que se deseja eliminar é dada por <span class="math inline">\(v(n)={\rm sen}(2\pi n/10+\pi/6+\phi_v)\)</span>, sendo <span class="math inline">\(\phi_v\)</span> uma variável aleatória distribuída uniformemente entre 0 e <span class="math inline">\(2\pi\)</span>;</li>
+<li><span class="math inline">\(x(n)\)</span> é um sinal correlacionado com a interferência, dado por <span class="math inline">\(x(n)=5{\rm sen}(2\pi n/10+\phi_x)\)</span> com <span class="math inline">\(\phi_x=\phi_v\)</span>;</li>
+<li><span class="math inline">\(d(n)=s(n)+v(n)\)</span> é a resposta desejada para o filtro adaptativo;</li>
 <li><span class="math inline">\(e(n)=d(n)-y(n)\)</span> é o erro de estimação.</li>
 </ul>
 <div id="fig-filtro-adaptativo" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -239,34 +239,28 @@ Figura&nbsp;1: Filtragem adaptativa para eliminação de interferências.
 </div>
 <p>Assumindo que o filtro adaptativo tenha <span class="math inline">\(M=2\)</span> coeficientes, pede-se:</p>
 <ol type="a">
-<li>Utilize a identidade <span class="math inline">\({\rm sen}(a){\rm sen}(b)=\frac{1}{2}\cos(a-b)-\frac{1}{2}\cos(a+b)\)</span> para obter a matriz <span class="math inline">\(\mathbf{R}={\rm E}\{{\mathbf u}(n){\mathbf u}^{\scriptscriptstyle T}(n)\}\)</span> de autocorrelação da entrada e o vetor <span class="math inline">\(\mathbf{p}={\rm E}\{{\mathbf u}(n)d(n)\}\)</span> de correlação cruzada entre a entrada e o sinal desejado. Calcule:</li>
-</ol>
+<li><p>Utilize a identidade <span class="math inline">\({\rm sen}(a){\rm sen}(b)=\frac{1}{2}\cos(a-b)-\frac{1}{2}\cos(a+b)\)</span> para obter a matriz <span class="math inline">\(\mathbf{R}={\rm E}\{{\mathbf x}(n){\mathbf x}^{\scriptscriptstyle T}(n)\}\)</span> de autocorrelação da entrada e o vetor <span class="math inline">\(\mathbf{p}={\rm E}\{{\mathbf x}(n)d(n)\}\)</span> de correlação cruzada entre a entrada e o sinal desejado. Calcule:</p>
 <ul>
 <li>o vetor de coeficientes ótimos <span class="math inline">\({\mathbf w}_{\rm o}=\mathbf{R}^{-1}\mathbf{p}\)</span>;</li>
 <li>o erro quadrático médio mínimo <span class="math inline">\(J_{\min}=\sigma_d^2-\mathbf{p}^{\scriptscriptstyle T}{\mathbf w}_{\rm o}\)</span>, justificando a relação entre <span class="math inline">\(J_{\min}\)</span> e <span class="math inline">\(\sigma_s^2\)</span>; e</li>
-<li>a resposta em freqüência do filtro ótimo na freqüência da interferência e compare com <span class="math inline">\(x(n)\)</span> e <span class="math inline">\(u(n)\)</span>.</li>
-</ul>
-<ol start="2" type="a">
-<li><p>Com a matriz <span class="math inline">\(\mathbf{R}\)</span> e a função <a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"><code>numpy.linalg.eig</code></a>, calcule a faixa de valores do passo de adaptação <span class="math inline">\(\mu\)</span> que garante a convergência do algoritmo .</p></li>
-<li><p>Aplique o algoritmo LMS com <span class="math inline">\(\mu=0,\hspace{-0.15ex}03\)</span> e <span class="math inline">\(N=500\)</span> iterações. Neste caso, pede-se:</p></li>
-</ol>
+<li>a resposta em frequência do filtro ótimo na frequência da interferência e compare com <span class="math inline">\(v(n)\)</span> e <span class="math inline">\(x(n)\)</span>.</li>
+</ul></li>
+<li><p>Com a matriz <span class="math inline">\(\mathbf{R}\)</span> e a função <a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"><code>numpy.linalg.eig</code></a>, calcule a faixa de valores do passo de adaptação <span class="math inline">\(\eta\)</span> que garante a convergência do algoritmo .</p></li>
+<li><p>Aplique o algoritmo LMS com <span class="math inline">\(\eta=0,\hspace{-0.15ex}03\)</span> e <span class="math inline">\(N=500\)</span> iterações. Neste caso, pede-se:</p>
 <ul>
-<li>observe inicialmente os sinais de entrada <span class="math inline">\(u(n)\)</span>, de erro <span class="math inline">\(e(n)\)</span> e <span class="math inline">\(s(n)\)</span> em gráficos na mesma escala;</li>
-<li>compare os coeficientes do filtro adaptativo com os coeficientes ótimos calculados no item a), fazendo um gráfico dos coeficientes ao longo das iterações;</li>
+<li>observe inicialmente os sinais de entrada <span class="math inline">\(x(n)\)</span>, de erro <span class="math inline">\(e(n)\)</span> e <span class="math inline">\(s(n)\)</span> em gráficos na mesma escala;</li>
+<li>compare os coeficientes do filtro adaptativo com os coeficientes ótimos calculados no item a, fazendo um gráfico dos coeficientes ao longo das iterações;</li>
 <li>trace as curvas de nível da superfície de erro e sobre elas, a trajetória dos coeficientes;</li>
 <li>trace a curva do erro quadrático <span class="math inline">\(e^2(n)\)</span> em dB.</li>
-</ul>
-<ol start="4" type="a">
-<li><p>Determine experimentalmente o valor máximo de <span class="math inline">\(\mu\)</span> para convergência do algoritmo LMS e compare-o com o valor calculado no item b) para o algoritmo <em>Steepest Descent</em>.</p></li>
-<li><p>Obtenha uma aproximação para <span class="math inline">\(J(n)={\rm E}\{e^2(n)\}\)</span> considerando uma média de 500 realizações de <span class="math inline">\(e^2(n)\)</span>. Note que em cada realização, um novo valor de <span class="math inline">\(\phi\)</span> e um novo <span class="math inline">\(s(n)\)</span> devem ser considerados. Pede-se:</p></li>
-</ol>
+</ul></li>
+<li><p>Determine experimentalmente o valor máximo de <span class="math inline">\(\eta\)</span> para convergência do algoritmo LMS e compare-o com o valor calculado no item b para o algoritmo <em>Steepest Descent</em>.</p></li>
+<li><p>Obtenha uma aproximação para <span class="math inline">\(J(n)={\rm E}\{e^2(n)\}\)</span> considerando uma média de 500 realizações de <span class="math inline">\(e^2(n)\)</span>. Note que em cada realização, um novo valor de <span class="math inline">\(\phi\)</span> e um novo <span class="math inline">\(s(n)\)</span> devem ser considerados. Pede-se:</p>
 <ul>
 <li>obtenha graficamente o valor do MSE em regime;</li>
-<li>a partir do valor do MSE experimental e do <span class="math inline">\(J_{\min}\)</span> calculado no item a), estime os valores experimentais do EMSE e do desajuste;</li>
+<li>a partir do valor do MSE experimental e do <span class="math inline">\(J_{\min}\)</span> calculado no item a, estime os valores experimentais do EMSE e do desajuste;</li>
 <li>calcule os valores teóricos do desajuste e do EMSE e compare com os valores experimentais.</li>
-</ul>
-<ol start="6" type="a">
-<li>Repita o item e) para <span class="math inline">\(\mu=0,\hspace{-0.15ex}01\)</span> e <span class="math inline">\(\mu=0,\hspace{-0.15ex}05\)</span>. Trace num mesmo gráfico as curvas de <span class="math inline">\(J(n)\)</span> em dB para <span class="math inline">\(\mu=0,\hspace{-0.15ex}01\)</span>, <span class="math inline">\(\mu=0,\hspace{-0.15ex}03\)</span> e <span class="math inline">\(\mu=0,\hspace{-0.15ex}05\)</span> e verifique o compromisso entre velocidade de convergência e erro quadrático médio.</li>
+</ul></li>
+<li><p>Repita o item e para <span class="math inline">\(\eta=0,\hspace{-0.15ex}01\)</span> e <span class="math inline">\(\eta=0,\hspace{-0.15ex}05\)</span>. Trace num mesmo gráfico as curvas de <span class="math inline">\(J(n)\)</span> em dB para <span class="math inline">\(\eta=0,\hspace{-0.15ex}01\)</span>, <span class="math inline">\(\eta=0,\hspace{-0.15ex}03\)</span> e <span class="math inline">\(\eta=0,\hspace{-0.15ex}05\)</span> e verifique o compromisso entre velocidade de convergência e erro quadrático médio.</p></li>
 </ol>
 </div>
 

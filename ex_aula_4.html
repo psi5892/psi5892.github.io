@@ -221,33 +221,31 @@ $$
 <div class="justify">
 <p>Utilize o algoritmo NLMS para identificar o seguinte sistema <span class="math display">\[H(z)=-0,\hspace{-0.15ex}34-1,\hspace{-0.15ex}00z^{-1}-0,\hspace{-0.15ex}97z^{-2}+0,\hspace{-0.15ex}82z^{-3}-0,\hspace{-0.15ex}33z^{-4}+0,\hspace{-0.15ex}61z^{-5}+0,\hspace{-0.15ex}72z^{-6} +1,\hspace{-0.15ex}20z^{-7}+0,\hspace{-0.15ex}39z^{-8}-0,\hspace{-0.15ex}69z^{-9}\]</span> que contém <span class="math inline">\(M=10\)</span> coeficientes. Assuma:</p>
 <ul>
-<li>como sinal de entrada <span class="math inline">\(u(n)\)</span>, um ruído branco Gaussiano de média nula e variância unitária;</li>
-<li>que o sinal desejado satisfaz o modelo <span class="math inline">\(d(n)={\mathbf u}^{\scriptscriptstyle T}(n){\mathbf w}_{\rm o}+v(n)\)</span>, sendo <span class="math inline">\({\mathbf w}_{\rm o}\)</span> o vetor de coeficientes ótimos formado pelos coeficientes do sistema que se deseja identificar e <span class="math inline">\(v(n)\)</span> branco Gaussiano de média nula e variância <span class="math inline">\(\sigma_v^2=10^{-4}\)</span>;</li>
-<li><span class="math inline">\(\tilde{\mu} \in \{0,\hspace{-0.15ex}3;\;\;\;0,\hspace{-0.15ex}5;\;\;\;0,\hspace{-0.15ex}7;\;\;\;0,\hspace{-0.15ex}9;\;\;\;1,\hspace{-0.15ex}1;\;\;\;1,\hspace{-0.15ex}3;\;\;\;1,\hspace{-0.15ex}5;\;\;\;1,\hspace{-0.15ex}7\}\)</span>;</li>
+<li>como sinal de entrada <span class="math inline">\(x(n)\)</span>, um ruído branco Gaussiano de média nula e variância unitária;</li>
+<li>que o sinal desejado satisfaz o modelo <span class="math inline">\(d(n)={\mathbf x}^{\scriptscriptstyle T}(n){\mathbf w}_{\rm o}+v(n)\)</span>, sendo <span class="math inline">\({\mathbf w}_{\rm o}\)</span> o vetor de coeficientes ótimos formado pelos coeficientes do sistema que se deseja identificar e <span class="math inline">\(v(n)\)</span> branco Gaussiano de média nula e variância <span class="math inline">\(\sigma_v^2=10^{-4}\)</span>;</li>
+<li><span class="math inline">\(\tilde{\eta} \in \{0,\hspace{-0.15ex}3;\;\;\;0,\hspace{-0.15ex}5;\;\;\;0,\hspace{-0.15ex}7;\;\;\;0,\hspace{-0.15ex}9;\;\;\;1,\hspace{-0.15ex}1;\;\;\;1,\hspace{-0.15ex}3;\;\;\;1,\hspace{-0.15ex}5;\;\;\;1,\hspace{-0.15ex}7\}\)</span>;</li>
 <li><span class="math inline">\(\delta=10^{-5}\)</span>;</li>
 <li><span class="math inline">\(N=500\)</span> iterações;</li>
 <li>média de 100 realizações.</li>
 </ul>
 <p>Pede-se:</p>
 <ol type="1">
-<li>para <span class="math inline">\(\tilde{\mu}=0,\hspace{-0.15ex}5\)</span>:</li>
-</ol>
+<li><p>para <span class="math inline">\(\tilde{\eta}=0,\hspace{-0.15ex}5\)</span>:</p>
 <ol type="a">
 <li>compare a média dos coeficientes adaptados com o algoritmo NLMS com o vetor de coeficientes ótimos, fazendo um gráfico dos mesmos;</li>
-<li>determine uma expressão para passo de adaptação do algoritmo LMS para que ele convirja para o mesmo valor de erro quadrático médio em excesso (EMSE) do algoritmo NLMS quando <span class="math inline">\(n\rightarrow \infty\)</span>. Para isso, utilize a expressão do EMSE em regime do algoritmo LMS que é válida para passo de adaptação suficientemente pequeno. A expressão resultante deve ser função de <span class="math inline">\(\tilde{\mu}\)</span> e <span class="math inline">\({\rm Tr}(\mathbf{R})\)</span>;</li>
-<li>Assuma que a convergência do algoritmo LMS é garantida no intervalo do passo de adaptação <span class="math inline">\(0&lt;\mu&lt;2/{\rm Tr}(\mathbf{R})\)</span>. Neste caso, determine o valor máximo do passo de adaptação <span class="math inline">\(\tilde{\mu}\)</span> do NLMS que pode ser usado na expressão obtida no item b que ainda garante a convergência do LMS;</li>
+<li>determine uma expressão para passo de adaptação do algoritmo LMS para que ele convirja para o mesmo valor de erro quadrático médio em excesso (EMSE) do algoritmo NLMS quando <span class="math inline">\(n\rightarrow \infty\)</span>. Para isso, utilize a expressão do EMSE em regime do algoritmo LMS que é válida para passo de adaptação suficientemente pequeno. A expressão resultante deve ser função de <span class="math inline">\(\tilde{\eta}\)</span> e <span class="math inline">\({\rm Tr}(\mathbf{R})\)</span>;</li>
+<li>Assuma que a convergência do algoritmo LMS é garantida no intervalo do passo de adaptação <span class="math inline">\(0&lt;\eta/{\rm Tr}(\mathbf{R})\)</span>. Neste caso, determine o valor máximo do passo de adaptação <span class="math inline">\(\tilde{\eta}\)</span> do NLMS que pode ser usado na expressão obtida no item b que ainda garante a convergência do LMS;</li>
 <li>trace a curva de EMSE para o NLMS e para o LMS com o passo calculado no item b e compare com o valores teóricos esperados em regime. Os algoritmos convergiram para o mesmo valor de EMSE em regime?</li>
-<li>Aumentando o valor de <span class="math inline">\(\tilde{\mu}\)</span>, os algoritmos continuam convergindo para o mesmo valor em regime? Caso isso não ocorra, dê uma explicação baseada nos modelos de EMSE usados para obter a expressão do do item b e a condição do item c.</li>
-</ol>
-<ol start="2" type="1">
-<li>Para os demais valores de <span class="math inline">\(\tilde{\mu}\)</span>, trace uma curva do EMSE teórico e do EMSE obtido da simulação do NLMS (valores m regime), ambos em dB, em função do passo de adaptação. Verifique se o modelo teórico do NLMS concorda com os resultados da simulação. O desajuste aumenta ou diminui com o aumento do passo de adaptação do algoritmo?</li>
+<li>Aumentando o valor de <span class="math inline">\(\tilde{\eta}\)</span>, os algoritmos continuam convergindo para o mesmo valor em regime? Caso isso não ocorra, dê uma explicação baseada nos modelos de EMSE usados para obter a expressão do do item b e a condição do item c.</li>
+</ol></li>
+<li><p>Para os demais valores de <span class="math inline">\(\tilde{\eta}\)</span>, trace uma curva do EMSE teórico e do EMSE obtido da simulação do NLMS (valores m regime), ambos em dB, em função do passo de adaptação. Verifique se o modelo teórico do NLMS concorda com os resultados da simulação. O desajuste aumenta ou diminui com o aumento do passo de adaptação do algoritmo?</p></li>
 </ol>
 <p><strong>Observações</strong>:</p>
 <ul>
 <li>Em cada realização, gere uma nova seqüência de entrada <span class="math inline">\(\{u(n)\}\)</span> e uma nova sequência de sinal desejado <span class="math inline">\(\{d(n)\}\)</span>, ambas de comprimento <span class="math inline">\(N\)</span>;</li>
-<li>No exercício 2, para cada passo de adaptação <span class="math inline">\(\tilde{\mu}\)</span>, você deve obter um vetor de dimensão <span class="math inline">\(N\)</span>, contendo o a média de conjunto do erro ao quadrado, ou seja, <span class="math inline">\({\rm E}\{e_a^2(n)\}\)</span>, para <span class="math inline">\(n=1,2,\cdots N\)</span>. Verifique o patamar para o qual essa média convergiu e compare com o valor teórico. Para calcular esse patamar utilize a função <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html"><code>numpy.mean</code></a> e calcule a média de <span class="math inline">\({\rm E}\{e_a^2(n)\}\)</span> de <span class="math inline">\(n=0,\hspace{-0.15ex}9N, \cdots,  N\)</span>, por exemplo;</li>
+<li>No item 2, para cada passo de adaptação <span class="math inline">\(\tilde{\eta}\)</span>, você deve obter um vetor de dimensão <span class="math inline">\(N\)</span>, contendo o a média de conjunto do erro ao quadrado, ou seja, <span class="math inline">\({\rm E}\{e_a^2(n)\}\)</span>, para <span class="math inline">\(n=1,2,\cdots N\)</span>. Verifique o patamar para o qual essa média convergiu e compare com o valor teórico. Para calcular esse patamar utilize a função <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html"><code>numpy.mean</code></a> e calcule a média de <span class="math inline">\({\rm E}\{e_a^2(n)\}\)</span> de <span class="math inline">\(n=0,\hspace{-0.15ex}9N, \cdots,  N\)</span>, por exemplo;</li>
 <li>A precisão dos valores de EMSE obtidos da simulação pode ser melhorada, se for considerado um número maior de iterações e de realizações;</li>
-<li>Note que o gráfico pedido no exercício 2 deve ter apenas 8 pontos. Para cada valor de <span class="math inline">\(\tilde{\mu}\)</span>, obtêm-se um valor para o EMSE teórico e um valor para o EMSE experimental em regime;</li>
+<li>Note que o gráfico pedido no item 2 deve ter apenas 8 pontos. Para cada valor de <span class="math inline">\(\tilde{\eta}\)</span>, obtêm-se um valor para o EMSE teórico e um valor para o EMSE experimental em regime;</li>
 <li>Não se esqueça de entregar as listagens dos programas usados para a solução desse exercício.</li>
 </ul>
 </div>
