@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introdução – PSI5892</title>
+<title>Exercício 4 - Algoritmo NLMS – PSI5892</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -273,7 +253,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Introdução</h1>
+<h1 class="title">Exercício 4 - Algoritmo NLMS</h1>
 </div>
 
 
@@ -290,102 +270,45 @@ window.Quarto = {
 </header>
 
 
-<div class="justify">
-<p>O <strong>Aprendizado de Máquina</strong> (<em>Machine Learning</em>) surgiu dentro de um campo da Ciência da Computação conhecido como <strong>Inteligência Artificial</strong> (IA). O objetivo da IA é tornar máquinas inteligentes, capazes de “pensar racionalmente como humanos” e resolver problemas. Já o aprendizado de máquina busca criar sistemas computacionais e algoritmos para possibilitar máquinas a “aprender” a partir de uma experiência prévia. Como a inteligência e o aprendizado andam juntos, o aprendizado de máquina tem um papel dominante em IA. Uma máquina aprende quando ela é capaz de acumular experiência (por meio de dados, programas, etc.) e desenvolver novo conhecimento de modo a fazer com que seu desempenho em tarefas específicas melhore com o tempo. A ideia de aprender a partir da experiência é central em vários problemas de aprendizado de máquina como os de classificação, cujo objetivo é encontrar uma forma sistemática de classificar um exemplo novo.</p>
-<p>As <strong>redes neurais</strong>, também chamadas de <strong>redes neurais artificiais</strong>, fazem parte de um subconjunto de técnicas de aprendizado de máquina. Na literatura, o termo “aprendizado de máquina” é muitas vezes confundido com o termo “aprendizado profundo” (<em>deep learning</em>). No entanto, uma rede neural só é considerada profunda se tiver duas ou mais camadas ocultas, conceito que será abordado posteriormente. Pode-se dizer que a maioria das redes neurais usadas na prática considera atualmente o aprendizado profundo. Na <a href="#fig-campos" class="quarto-xref">Figura&nbsp;1</a>, fica claro que as redes neurais profundas são um subconjunto das redes neurais, que por sua vez são um subconjunto de técnicas de aprendizado de máquina. Todas as técnicas de aprendizado de máquina fazem parte do campo de IA.</p>
-<div id="fig-campos" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-campos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./images/campos.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-campos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;1: Diagrama indicando o subcampo das redes neurais profundas dentro da IA.
-</figcaption>
-</figure>
-</div>
-<p>Desde o surgimento dos computadores, os cientistas têm buscado maneiras de permitir que as máquinas produzam uma saída desejada a partir de entradas para tarefas como classificação e regressão. As redes neurais são sistemas não lineares que podem ser usados para essas tarefas. Elas surgiram na década de 1940, mas o algoritmo utilizado no seu treinamento, chamado de algoritmo de retropropagação (<em>backpropagation</em>), foi proposto apenas em 1986. Nas décadas de 1990 e 2000, muitos problemas foram observados no treinamento das redes neurais, que dificultavam sua capacidade de generalização e sua utilização em problemas práticos. No entanto, na década de 2010 diferentes abordagens foram propostas para melhorar seu treinamento, incluindo o treinamento das redes profundas. Essas abordagens fizeram com que as redes passassem a ganhar competições em diferentes problemas de classificação e regressão. Desde então, as redes neurais estão em ascensão devido à sua habilidade de resolver problemas anteriormente considerados insolúveis. Atualmente, elas têm sido consideradas em diferentes áreas como carros autônomos, cálculo de risco, detecção de fraude, detecção precoce de câncer, classificação de arritmias cardíacas, classificação de mosquitos, entre muitos outros.</p>
-<p>O aprendizado de máquina pode ser classificado em dois tipos: supervisionado e não supervisionado. No caso supervisionado, existem dados rotulados que são usados no treinamento. Por exemplo, suponha que desejamos classificar o tipo de arritmia cardíaca. Nesse tipo de aplicação, é comum considerar o aprendizado supervisionado: existem bancos de dados com sinais de eletrocardiograma (ECG), cujas arritmias foram analisadas e classificadas <em>a priori</em> por um grupo de especialistas. Parte desses sinais é utilizada no treinamento: para cada batimento cardíaco a saída da máquina é comparada com a classificação conhecida. A comparação entre a saída e a classificação desejada é usada para ajustar os parâmetros da máquina a fim de minimizar uma função dessa diferença. Parte dos dados que não foi utilizada no treinamento é reservada para o teste. Neste caso, os parâmetros da máquina são mantidos fixos para verificar se a máquina tem uma boa capacidade de generalização. Em outras palavras, verifica-se se a máquina treinada é capaz de classificar dados que não foram utilizados no treinamento, possibilitando medir a acurácia que se obtém nessa classificação. No aprendizado não supervisionado, a máquina deve ser capaz de ajustar seus parâmetros sem utilizar dados com a classificação ou regressão desejada, ou seja, os rótulos não são conhecidos. Esse tipo de aprendizado é adequado para problemas que exigem que a máquina identifique e extraia semelhanças entre as entradas para que entradas semelhantes possam ser categorizadas juntas. Os dois tipos fundamentais de métodos de aprendizado não supervisionado são o agrupamento e a estimativa de densidade. O primeiro, que é o mais utilizado na prática, envolve problemas em que se necessita agrupar os dados em categorias específicas conhecidas como <em>clusters</em>, enquanto o último envolve estimar a distribuição estatística dos dados. Alguns exemplos de algoritmos de aprendizado de máquina não supervisionado incluem <span class="math inline">\(k\)</span>-means, análise de componentes principais e clusterização hierárquica.</p>
-<p>A seguir vamos abordar os dois tipos de problema que as redes neurais são capazes de resolver: classificação e regressão.</p>
-<section id="aproximação-de-funções" class="level2">
-<h2 class="anchored" data-anchor-id="aproximação-de-funções">Aproximação de funções</h2>
-<p>A modelagem preditiva consiste em desenvolver um modelo usando dados históricos para fazer uma previsão sobre novos dados para os quais não temos resposta. Ela pode ser descrita pelo problema matemático de aproximar uma função de mapeamento de variáveis de entrada para variáveis de saída, que é chamado de aproximação de funções. O trabalho do algoritmo de modelagem é encontrar a melhor função de mapeamento possível, considerando o tempo e os recursos disponíveis. Podemos dividir a aproximação de funções em problemas de classificação ou de regressão.</p>
-<section id="classificação" class="level3">
-<h3 class="anchored" data-anchor-id="classificação">Classificação</h3>
-<p>A modelagem preditiva de classificação é a tarefa de aproximar uma função de mapeamento de variáveis de entrada para variáveis de saída discretas. As variáveis de saída são frequentemente chamadas de rótulos ou categorias. A função de mapeamento prevê a classe ou categoria para uma determinada observação. Por exemplo, um e-mail de texto pode ser classificado como pertencente a uma das duas classes: “<em>spam</em>” e “não <em>spam</em>”.</p>
-<p>Algumas observações sobre o problema de classificação:</p>
-<ol type="1">
-<li>Um problema de classificação requer que os exemplos sejam classificados em uma de duas ou mais classes;</li>
-<li>Uma classificação pode ter variáveis de entrada discretas ou contínuas. Variáveis contínuas são aquelas que assumem qualquer valor em um intervalo da reta real, e.g.&nbsp;qualquer valor real do intervalo <span class="math inline">\([-1,\; 1]\)</span>;</li>
-<li>Um problema com duas classes é frequentemente chamado de problema de classificação binária;</li>
-<li>Um problema com mais de duas classes é frequentemente chamado de problema de classificação multiclasse;</li>
-<li>Um problema em que um exemplo é atribuído a várias classes é chamado de problema de classificação multirrótulo.</li>
-</ol>
-<p>É comum que os modelos de classificação prevejam um valor contínuo como a probabilidade de um dado exemplo pertencer a cada classe de saída. Uma probabilidade prevista pode ser convertida em um valor de classe selecionando o rótulo da classe que tem a probabilidade mais alta. Por exemplo, um e-mail específico de texto pode receber as probabilidades de <span class="math inline">\(0,1\)</span> de ser “<em>spam</em>” e <span class="math inline">\(0,9\)</span> de ser “não <em>spam</em>”. Podemos converter essas probabilidades em um rótulo de classe selecionando o rótulo “não <em>spam</em>”, pois ele tem a maior probabilidade prevista.</p>
-<p>Existem muitas maneiras de estimar a habilidade do classificador, sendo a mais comum calcular a acurácia da classificação. A acurácia da classificação é a porcentagem de exemplos classificados corretamente de todas as previsões feitas. Por exemplo, se um modelo preditivo de classificação fizer 5 previsões e 3 delas estiverem corretas e 2 incorretas, a acurácia da classificação do modelo com base apenas nessas previsões seria <span class="math inline">\((3/5)\times 100= 60\%\)</span>.</p>
-<p>Como exemplo de problema de classificação, considere as 20 imagens da <a href="#fig-gato-cachorro" class="quarto-xref">Figura&nbsp;2</a>. Observe que cada imagem contém a foto de um gato ou de um cachorro. Pode-se usar uma técnica de aprendizado de máquina para classificar cada uma dessas imagens entre as duas classes possíveis: gato ou cachorro.</p>
-<div id="fig-gato-cachorro" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-gato-cachorro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./images/gato_cachorro.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gato-cachorro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2: Imagens de gatos e cachorros.
-</figcaption>
-</figure>
-</div>
-</section>
-<section id="regressão" class="level3">
-<h3 class="anchored" data-anchor-id="regressão">Regressão</h3>
-<p>A modelagem preditiva de regressão é a tarefa de aproximar uma função de mapeamento de variáveis de entrada para variáveis de saída contínuas. Por exemplo, pode-se prever que um apartamento seja vendido por um valor específico em reais, talvez na faixa de R$<span class="math inline">\(500.000\)</span>.</p>
-<p>Algumas observações sobre o problema de regressão:</p>
-<ol type="1">
-<li>Um problema de regressão requer a previsão de uma quantidade;</li>
-<li>Uma regressão pode ter variáveis de entrada discretas ou contínuas;</li>
-<li>Um problema com múltiplas variáveis de entrada é frequentemente chamado de problema de regressão multivariada;</li>
-<li>Um problema de regressão em que as variáveis de entrada são ordenadas por tempo é chamado de problema de previsão de séries temporais.</li>
-</ol>
-<p>Como o modelo preditivo de regressão prevê uma quantidade, a habilidade do modelo deve ser descrita pelo erro de predição calculado como a diferença entre a previsão do regressor e o valor desejado. Existem muitas maneiras de estimar a habilidade do regressor, sendo a mais comum calcular a raiz quadrada do erro quadrático médio (<em>root mean squared error</em> - RMSE), que tem a mesma unidade do valor predito. Por exemplo, se um modelo preditivo de regressão fez 2 previsões, uma de 1,5 em que o valor esperado é 1,0 e outra de 3,3 em que o valor esperado é 3,0, então o RMSE seria</p>
-<p><span class="math display">\[
-{\rm RMSE}=\sqrt{\frac{(1,0-1,5)^2+(3,0-3,3)^2}{2}}=0,412.
-\]</span></p>
-<p>Como exemplo de problema de regressão, considere a evolução do índice Bovespa (Ibovespa) de dezembro de 1967 a dezembro de 2017 mostrado na <a href="#fig-ibovespa" class="quarto-xref">Figura&nbsp;3</a>. O Ibovespa é o indicador de desempenho mais importante das ações negociadas na B3 e reúne as empresas mais importantes do mercado de capitais brasileiro. Suponha que se deseja usar uma técnica de aprendizado de máquina para prever o valor desse índice no ano seguinte, ou seja, de janeiro a dezembro de 2018. Para isso, pode-se considerar os dados sequenciais desde dezembro de 1967 e usar os dados do ano seguinte como resposta desejada. Assim, no treinamento pode-se considerar, por exemplo, os dados de 1968 para prever os dados de 1969 e assim por diante. O valor do índice a ser previsto é qualquer valor contínuo no intervalo <span class="math inline">\([0,\; 131.000]\)</span> já que em 2018 esse índice não tinha atingido seu recorde nominal histórico que ocorreu em 07/06/2021, fechando em 130.776 pontos.</p>
-<div id="fig-ibovespa" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ibovespa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./images/ibovespa.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ibovespa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;3: Evolução do Ibovespa de dezembro de 1967 a dezembro de 2017.
-</figcaption>
-</figure>
-</div>
 <div hidden="">
-[<span class="citation" data-cites="Haykin2009">Haykin (<a href="#ref-Haykin2009" role="doc-biblioref">2009</a>)</span>]<span class="citation" data-cites="HarrisonKukielaBook2020">(<a href="#ref-HarrisonKukielaBook2020" role="doc-biblioref">Kinsley e Kukie​la 2020</a>)</span>[<span class="citation" data-cites="JasonRegrClass2017">Brownlee (<a href="#ref-JasonRegrClass2017" role="doc-biblioref">2017</a>)</span>]<span class="citation" data-cites="AlanBook2008">(<a href="#ref-AlanBook2008" role="doc-biblioref">Izenman 2008</a>)</span><span class="citation" data-cites="KevinBook2012">(<a href="#ref-KevinBook2012" role="doc-biblioref">Murphy 2012</a>)</span>
+$$
+<p>$$</p>
 </div>
-</section>
-</section>
+<div class="justify">
+<p>Utilize o algoritmo NLMS para identificar o seguinte sistema <span class="math display">\[H(z)=-0,\hspace{-0.15ex}34-1,\hspace{-0.15ex}00z^{-1}-0,\hspace{-0.15ex}97z^{-2}+0,\hspace{-0.15ex}82z^{-3}-0,\hspace{-0.15ex}33z^{-4}+0,\hspace{-0.15ex}61z^{-5}+0,\hspace{-0.15ex}72z^{-6} +1,\hspace{-0.15ex}20z^{-7}+0,\hspace{-0.15ex}39z^{-8}-0,\hspace{-0.15ex}69z^{-9}\]</span> que contém <span class="math inline">\(M=10\)</span> coeficientes. Assuma:</p>
+<ul>
+<li>como sinal de entrada <span class="math inline">\(x(n)\)</span>, um ruído branco Gaussiano de média nula e variância unitária;</li>
+<li>que o sinal desejado satisfaz o modelo <span class="math inline">\(d(n)={\mathbf x}^{\scriptscriptstyle T}(n){\mathbf w}_{\rm o}+v(n)\)</span>, sendo <span class="math inline">\({\mathbf w}_{\rm o}\)</span> o vetor de coeficientes ótimos formado pelos coeficientes do sistema que se deseja identificar e <span class="math inline">\(v(n)\)</span> branco Gaussiano de média nula e variância <span class="math inline">\(\sigma_v^2=10^{-4}\)</span>;</li>
+<li><span class="math inline">\(\tilde{\eta} \in \{0,\hspace{-0.15ex}3;\;\;\;0,\hspace{-0.15ex}5;\;\;\;0,\hspace{-0.15ex}7;\;\;\;0,\hspace{-0.15ex}9;\;\;\;1,\hspace{-0.15ex}1;\;\;\;1,\hspace{-0.15ex}3;\;\;\;1,\hspace{-0.15ex}5;\;\;\;1,\hspace{-0.15ex}7\}\)</span>;</li>
+<li><span class="math inline">\(\delta=10^{-5}\)</span>;</li>
+<li><span class="math inline">\(N=500\)</span> iterações;</li>
+<li>média de 100 realizações.</li>
+</ul>
+<p>Pede-se:</p>
+<ol type="1">
+<li><p>para <span class="math inline">\(\tilde{\eta}=0,\hspace{-0.15ex}5\)</span>:</p>
+<ol type="a">
+<li>compare a média dos coeficientes adaptados com o algoritmo NLMS com o vetor de coeficientes ótimos, fazendo um gráfico dos mesmos;</li>
+<li>determine uma expressão para passo de adaptação do algoritmo LMS para que ele convirja para o mesmo valor de erro quadrático médio em excesso (EMSE) do algoritmo NLMS quando <span class="math inline">\(n\rightarrow \infty\)</span>. Para isso, utilize a expressão do EMSE em regime do algoritmo LMS que é válida para passo de adaptação suficientemente pequeno. A expressão resultante deve ser função de <span class="math inline">\(\tilde{\eta}\)</span> e <span class="math inline">\({\rm Tr}(\mathbf{R})\)</span>;</li>
+<li>Assuma que a convergência do algoritmo LMS é garantida no intervalo do passo de adaptação <span class="math inline">\(0&lt;\eta&lt;2/{\rm Tr}(\mathbf{R})\)</span>. Neste caso, determine o valor máximo do passo de adaptação <span class="math inline">\(\tilde{\eta}\)</span> do NLMS que pode ser usado na expressão obtida no item b que ainda garante a convergência do LMS;</li>
+<li>trace a curva de EMSE para o NLMS e para o LMS com o passo calculado no item b e compare com o valores teóricos esperados em regime. Os algoritmos convergiram para o mesmo valor de EMSE em regime?</li>
+<li>Aumentando o valor de <span class="math inline">\(\tilde{\eta}\)</span>, os algoritmos continuam convergindo para o mesmo valor em regime? Caso isso não ocorra, dê uma explicação baseada nos modelos de EMSE usados para obter a expressão do do item b e a condição do item c.</li>
+</ol></li>
+<li><p>Para os demais valores de <span class="math inline">\(\tilde{\eta}\)</span>, trace uma curva do EMSE teórico e do EMSE obtido da simulação do NLMS (valores m regime), ambos em dB, em função do passo de adaptação. Verifique se o modelo teórico do NLMS concorda com os resultados da simulação. O desajuste aumenta ou diminui com o aumento do passo de adaptação do algoritmo?</p></li>
+</ol>
+<p><strong>Observações</strong>:</p>
+<ul>
+<li>Em cada realização, gere uma nova seqüência de entrada <span class="math inline">\(\{u(n)\}\)</span> e uma nova sequência de sinal desejado <span class="math inline">\(\{d(n)\}\)</span>, ambas de comprimento <span class="math inline">\(N\)</span>;</li>
+<li>No item 2, para cada passo de adaptação <span class="math inline">\(\tilde{\eta}\)</span>, você deve obter um vetor de dimensão <span class="math inline">\(N\)</span>, contendo o a média de conjunto do erro ao quadrado, ou seja, <span class="math inline">\({\rm E}\{e_a^2(n)\}\)</span>, para <span class="math inline">\(n=1,2,\cdots N\)</span>. Verifique o patamar para o qual essa média convergiu e compare com o valor teórico. Para calcular esse patamar utilize a função <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html"><code>numpy.mean</code></a> e calcule a média de <span class="math inline">\({\rm E}\{e_a^2(n)\}\)</span> de <span class="math inline">\(n=0,\hspace{-0.15ex}9N, \cdots,  N\)</span>, por exemplo;</li>
+<li>A precisão dos valores de EMSE obtidos da simulação pode ser melhorada, se for considerado um número maior de iterações e de realizações;</li>
+<li>Note que o gráfico pedido no item 2 deve ter apenas 8 pontos. Para cada valor de <span class="math inline">\(\tilde{\eta}\)</span>, obtêm-se um valor para o EMSE teórico e um valor para o EMSE experimental em regime;</li>
+<li>Não se esqueça de entregar as listagens dos programas usados para a solução desse exercício.</li>
+</ul>
 </div>
 
 
 
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Referências</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-JasonRegrClass2017" class="csl-entry" role="listitem">
-Brownlee, Jason. 2017. <em>Difference Between Classification and Regression in Machine Learning</em>. <a href="https://machinelearningmastery.com/classification-versus-regression-in-machine-learning/" class="uri">https://machinelearningmastery.com/classification-versus-regression-in-machine-learning/</a>.
-</div>
-<div id="ref-Haykin2009" class="csl-entry" role="listitem">
-Haykin, Simon. 2009. <em>Neural networks and learning machines</em>. 3rd ed. Pearson.
-</div>
-<div id="ref-AlanBook2008" class="csl-entry" role="listitem">
-Izenman, Alan Julian. 2008. <em>Modern Multivariate Statistical Techniques</em>. Springer.
-</div>
-<div id="ref-HarrisonKukielaBook2020" class="csl-entry" role="listitem">
-Kinsley, Harrison, e Daniel Kukie​la. 2020. <em>Neural Networks from Scratch in Python</em>. Harrison Kinsley,&nbsp;<a href="https://nnfs.io" class="uri">https://nnfs.io</a>.
-</div>
-<div id="ref-KevinBook2012" class="csl-entry" role="listitem">
-Murphy, Kevin P. 2012. <em>Machine Learning: a probabilistic perspective</em>. MIT Press.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
 var custom_title = document.querySelectorAll('.custom .theorem-title');
 
