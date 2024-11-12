@@ -102,6 +102,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -355,16 +384,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="c545f8b5-bd52-4e46-9487-b605d63ee40c" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>torch.rand(<span class="dv">2</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-<pre data-code-line-numbers=""><code>tensor([[0.1822, 0.9239],
-        [0.8521, 0.6765]])</code></pre>
+<pre data-code-line-numbers=""><code>tensor([[0.4627, 0.0157],
+        [0.7564, 0.2955]])</code></pre>
 </div>
 </div>
 <div id="59400240-30e6-4ea0-8167-ea6b83208f7e" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>torch.randn(<span class="dv">3</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-<pre data-code-line-numbers=""><code>tensor([[ 1.7184,  0.7325, -0.2358],
-        [ 0.9880,  1.0727, -1.5431],
-        [-0.9920,  1.9307, -1.0701]])</code></pre>
+<pre data-code-line-numbers=""><code>tensor([[ 0.8184, -0.8506,  0.1130],
+        [-0.6483,  0.3056, -1.1019],
+        [ 0.2038,  0.0101, -0.0732]])</code></pre>
 </div>
 </div>
 <div id="dea2674b-7ab4-40c2-b307-ea8ddfd5b467" class="cell" data-execution_count="11">
@@ -404,44 +433,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb24" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.rand(<span class="dv">4</span>,<span class="dv">3</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
-<pre data-code-line-numbers=""><code>tensor([[0.4120, 0.4468, 0.2359],
-        [0.6905, 0.9573, 0.4613],
-        [0.5446, 0.4713, 0.2353],
-        [0.1008, 0.8624, 0.0569]])</code></pre>
+<pre data-code-line-numbers=""><code>tensor([[0.5454, 0.9074, 0.4452],
+        [0.0081, 0.8214, 0.5032],
+        [0.5534, 0.5719, 0.6812],
+        [0.5485, 0.8859, 0.3083]])</code></pre>
 </div>
 </div>
 <div id="24d79cfe-0c56-4d7f-ae01-bee99ddd1830" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb26" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>x.view(<span class="dv">12</span>, <span class="op">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
-<pre data-code-line-numbers=""><code>tensor([[0.4120],
-        [0.4468],
-        [0.2359],
-        [0.6905],
-        [0.9573],
-        [0.4613],
-        [0.5446],
-        [0.4713],
-        [0.2353],
-        [0.1008],
-        [0.8624],
-        [0.0569]])</code></pre>
+<pre data-code-line-numbers=""><code>tensor([[0.5454],
+        [0.9074],
+        [0.4452],
+        [0.0081],
+        [0.8214],
+        [0.5032],
+        [0.5534],
+        [0.5719],
+        [0.6812],
+        [0.5485],
+        [0.8859],
+        [0.3083]])</code></pre>
 </div>
 </div>
 <div id="9f9d333a-0945-4e69-84c0-cfb16c5ca5ef" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb28" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>x.reshape(<span class="dv">12</span>, <span class="op">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
-<pre data-code-line-numbers=""><code>tensor([[0.4120],
-        [0.4468],
-        [0.2359],
-        [0.6905],
-        [0.9573],
-        [0.4613],
-        [0.5446],
-        [0.4713],
-        [0.2353],
-        [0.1008],
-        [0.8624],
-        [0.0569]])</code></pre>
+<pre data-code-line-numbers=""><code>tensor([[0.5454],
+        [0.9074],
+        [0.4452],
+        [0.0081],
+        [0.8214],
+        [0.5032],
+        [0.5534],
+        [0.5719],
+        [0.6812],
+        [0.5485],
+        [0.8859],
+        [0.3083]])</code></pre>
 </div>
 </div>
 <section id="operações" class="level3">
@@ -535,17 +564,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="conversão-de-dados-para-numpy-e-vice-versa" class="level3">
 <h3 class="anchored" data-anchor-id="conversão-de-dados-para-numpy-e-vice-versa">1.3 Conversão de dados para NumPy e vice-versa</h3>
 <ul>
-<li>Um tensor do PyTorch pode ser convertido para um <em>array</em> do NumPy usando o método .numpy()`:</li>
+<li>Um tensor do PyTorch pode ser convertido para um <em>array</em> do NumPy usando o método <code>.numpy()</code>:</li>
 </ul>
 <div id="3991cab5-2579-45a8-a621-12599b9ce089" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb48" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.randn(<span class="dv">5</span>,<span class="dv">5</span>)</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="28">
-<pre data-code-line-numbers=""><code>tensor([[-0.0475, -0.6951,  0.6743, -1.3640,  0.8516],
-        [-0.6072, -1.8393,  0.6060, -1.3986, -0.5471],
-        [-1.6266, -1.2548,  0.8110,  0.3843,  0.1896],
-        [ 0.5448, -2.7137, -0.5067,  1.8997,  0.8794],
-        [ 0.4803,  0.5730,  0.2100, -0.5451,  0.0597]])</code></pre>
+<pre data-code-line-numbers=""><code>tensor([[-0.6816,  0.0935,  0.2459, -0.7493,  0.3136],
+        [-1.2594, -0.5296,  0.8730, -0.7298, -1.5338],
+        [-1.8568,  1.3244,  0.6735, -1.0898,  1.5097],
+        [ 1.3226,  0.5073, -1.1426, -0.4718,  0.3528],
+        [ 0.9534,  0.1328, -1.2758, -0.4226, -0.2927]])</code></pre>
 </div>
 </div>
 <div id="d0015301-2cb1-4df5-a408-749a5b5c4beb" class="cell" data-execution_count="29">
@@ -558,11 +587,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb52" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>x_np <span class="op">=</span> x.numpy()</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>x_np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="30">
-<pre data-code-line-numbers=""><code>array([[-0.04745141, -0.69513506,  0.6742779 , -1.3640411 ,  0.8515677 ],
-       [-0.6071822 , -1.8392884 ,  0.6060152 , -1.3985505 , -0.54706645],
-       [-1.6265795 , -1.254808  ,  0.8110163 ,  0.3843195 ,  0.18963134],
-       [ 0.5448107 , -2.713655  , -0.50672483,  1.8996508 ,  0.87941235],
-       [ 0.4803328 ,  0.5729542 ,  0.21001685, -0.54511493,  0.05966017]],
+<pre data-code-line-numbers=""><code>array([[-0.68164784,  0.0934647 ,  0.2458577 , -0.74928635,  0.31357208],
+       [-1.2594244 , -0.5295776 ,  0.8729781 , -0.7298177 , -1.5337765 ],
+       [-1.8568362 ,  1.3243922 ,  0.67345995, -1.0897577 ,  1.5096619 ],
+       [ 1.3226392 ,  0.5072677 , -1.1425856 , -0.471815  ,  0.3528156 ],
+       [ 0.9534018 ,  0.1327898 , -1.2757865 , -0.42259562, -0.2927368 ]],
       dtype=float32)</code></pre>
 </div>
 </div>
@@ -579,11 +608,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb56" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>x_np <span class="op">=</span> np.random.randn(<span class="dv">5</span>,<span class="dv">5</span>)</span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>x_np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="32">
-<pre data-code-line-numbers=""><code>array([[-1.37809662, -0.07378015, -0.86446831,  1.20265543, -1.25361983],
-       [-0.14066389, -0.58857184,  1.33793313,  1.12732479, -0.87137573],
-       [ 0.19232294,  0.13298185,  0.98717105,  0.8995655 ,  0.15003134],
-       [ 0.20407629, -0.64705029, -1.55628302,  0.63332911, -0.89715297],
-       [ 0.53191555,  0.56665046,  2.27974678,  0.60181584,  0.23895466]])</code></pre>
+<pre data-code-line-numbers=""><code>array([[ 1.31432832, -0.36861244, -0.3046562 , -0.33023771, -0.82671593],
+       [-0.51243873,  0.72323039,  0.04969584, -0.65471439,  1.55967213],
+       [-0.83907024,  0.75255006,  0.79133042, -0.58951383, -0.45952117],
+       [-0.11569936, -1.68461198,  0.6804936 , -0.18411678, -0.71627022],
+       [ 0.76343194, -1.04045083,  1.82626996,  0.34407146, -0.41066983]])</code></pre>
 </div>
 </div>
 <div id="380b19fa-ee99-4d5c-bed4-15447b59cded" class="cell" data-execution_count="33">
@@ -596,11 +625,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb60" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.Tensor(x_np,)</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="34">
-<pre data-code-line-numbers=""><code>tensor([[-1.3781, -0.0738, -0.8645,  1.2027, -1.2536],
-        [-0.1407, -0.5886,  1.3379,  1.1273, -0.8714],
-        [ 0.1923,  0.1330,  0.9872,  0.8996,  0.1500],
-        [ 0.2041, -0.6471, -1.5563,  0.6333, -0.8972],
-        [ 0.5319,  0.5667,  2.2797,  0.6018,  0.2390]])</code></pre>
+<pre data-code-line-numbers=""><code>tensor([[ 1.3143, -0.3686, -0.3047, -0.3302, -0.8267],
+        [-0.5124,  0.7232,  0.0497, -0.6547,  1.5597],
+        [-0.8391,  0.7526,  0.7913, -0.5895, -0.4595],
+        [-0.1157, -1.6846,  0.6805, -0.1841, -0.7163],
+        [ 0.7634, -1.0405,  1.8263,  0.3441, -0.4107]])</code></pre>
 </div>
 </div>
 <div id="83aaad34-7be8-42e8-bf99-179a017a14e6" class="cell" data-execution_count="35">
@@ -677,7 +706,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Gradiente de <code>f</code> em relação <code>x0</code> e <code>x1</code>:</li>
 </ul>
-<p>$ = = $</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial \mathbf{x}} =
+\left[
+\begin{matrix}
+\frac{\partial f}{\partial x_0}\\
+\frac{\partial f}{\partial x_1}\\
+\end{matrix}
+\right] =
+\left[
+\begin{matrix}
+2x_0\\
+1\\
+\end{matrix}
+\right]
+\]</span></p>
 <ul>
 <li>Os gradientes são armazenados no atributo <code>grad</code>, inicialmente igual a <code>None</code>:</li>
 </ul>
@@ -726,7 +769,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="do-numpy-ao-pytorch" class="level2">
 <h2 class="anchored" data-anchor-id="do-numpy-ao-pytorch">3. Do NumPy ao PyTorch</h2>
-<p>A seguir, serão apresentados os principais elementos do PyTorch, partindo de um exemplo de treinamento de um modelo com o LMS implementado com o NumPy. Serão abordados: - Uso de tensores PyTorch; - Uso do autograd; - Blocos para função custo; - Blocos para otimizadores; - Uso de objetos representando modelos PyTorch; - Uso de blocos PyTorch para a composição de modelos.</p>
+<p>A seguir, serão apresentados os principais elementos do PyTorch, partindo de um exemplo de treinamento de um modelo com o LMS implementado com o NumPy. Serão abordados:</p>
+<ul>
+<li>Uso de tensores PyTorch;</li>
+<li>Uso do autograd;</li>
+<li>Blocos para função custo;</li>
+<li>Blocos para otimizadores;</li>
+<li>Uso de objetos representando modelos PyTorch;</li>
+<li>Uso de blocos PyTorch para a composição de modelos.</li>
+</ul>
 <p>As mudanças no código serão indicadas por comentários.</p>
 <section id="começando-pelo-numpy" class="level3">
 <h3 class="anchored" data-anchor-id="começando-pelo-numpy">3.1 Começando pelo NumPy</h3>
@@ -923,8 +974,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
 <span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#e = torch.zeros((N, 1))</span></span>
-<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb105-10"><a href="#cb105-10" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> torch.zeros(N <span class="op">+</span> <span class="dv">1</span>, M)</span>
 <span id="cb105-11"><a href="#cb105-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb105-12"><a href="#cb105-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Novo</span></span>
@@ -1045,7 +1096,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb111-11"><a href="#cb111-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Novo</span></span>
 <span id="cb111-12"><a href="#cb111-12" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LMS()</span>
 <span id="cb111-13"><a href="#cb111-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb111-14"><a href="#cb111-14" aria-hidden="true" tabindex="-1"></a><span class="co"># def lms_torch_model(x, d, eta, M):</span></span>
+<span id="cb111-14"><a href="#cb111-14" aria-hidden="true" tabindex="-1"></a><span class="co"># def lms_torch_optim(x, d, eta, M):</span></span>
 <span id="cb111-15"><a href="#cb111-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms_torch_model(x, d, eta, M, model):</span>
 <span id="cb111-16"><a href="#cb111-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb111-17"><a href="#cb111-17" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
@@ -1076,11 +1127,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb111-42"><a href="#cb111-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():            </span>
 <span id="cb111-43"><a href="#cb111-43" aria-hidden="true" tabindex="-1"></a>            y[i] <span class="op">=</span> yi</span>
 <span id="cb111-44"><a href="#cb111-44" aria-hidden="true" tabindex="-1"></a>            losses[i] <span class="op">=</span> loss</span>
-<span id="cb111-45"><a href="#cb111-45" aria-hidden="true" tabindex="-1"></a>            w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> model.wi.clone()</span>
-<span id="cb111-46"><a href="#cb111-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb111-47"><a href="#cb111-47" aria-hidden="true" tabindex="-1"></a>        <span class="co"># wi.grad.zero_()        </span></span>
-<span id="cb111-48"><a href="#cb111-48" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb111-49"><a href="#cb111-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, loss, w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb111-45"><a href="#cb111-45" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb111-46"><a href="#cb111-46" aria-hidden="true" tabindex="-1"></a>            <span class="co"># w[i + 1, :] = wi</span></span>
+<span id="cb111-47"><a href="#cb111-47" aria-hidden="true" tabindex="-1"></a>            w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> model.wi.clone()</span>
+<span id="cb111-48"><a href="#cb111-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-49"><a href="#cb111-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># wi.grad.zero_()        </span></span>
+<span id="cb111-50"><a href="#cb111-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb111-51"><a href="#cb111-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, loss, w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="62811d4e-6cb1-4da5-8ed0-e6ef24ad65c7" class="cell" data-execution_count="71">
 <div class="sourceCode cell-code" id="cb112" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>(y_torch_model, e_torch_model, w_torch_model) <span class="op">=</span> lms_torch_model(x, d, eta, M, model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
