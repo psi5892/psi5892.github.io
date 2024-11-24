@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.57">
@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Avaliação - Parte Prática – PSI5892</title>
+<title>Exercício - Medidas de desempenho – PSI5892</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,44 +20,10 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -87,52 +53,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -148,8 +82,8 @@ window.Quarto = {
     <span class="navbar-title">PSI5892</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Procurar"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Alternar de navegação" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -186,6 +120,18 @@ window.Quarto = {
         <li>
     <a class="dropdown-item" href="./hiperparametros.html">
  <span class="dropdown-text">Evitando mínimos locais e <em>overfitting</em></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./medidas.html">
+ <span class="dropdown-text">Medidas de desempenho</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pca.html">
+ <span class="dropdown-text">Análise de Componentes Principais</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lda.html">
+ <span class="dropdown-text">Análise de Discriminante Linear</span></a>
   </li>  
     </ul>
   </li>
@@ -242,6 +188,10 @@ window.Quarto = {
     <a class="dropdown-item" href="./ex_aula_mlp_pytorch.html">
  <span class="dropdown-text">Exercício - MLP com PyTorch</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./ex_medidas.html">
+ <span class="dropdown-text">Exercício - Medidas de desempenho</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item">
@@ -290,7 +240,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Avaliação - Parte Prática</h1>
+<h1 class="title">Exercício - Medidas de desempenho</h1>
 </div>
 
 
@@ -308,323 +258,7 @@ window.Quarto = {
 
 
 <div class="justify">
-<p>Na parte prática da avaliação, você vai trabalhar com um projeto de uma aplicação com redes neurais para a área de saúde. O objetivo é obter um modelo de predição de uma doença cardíaca baseado em dados com características extraídas de exames clínicos laboratoriais.</p>
-<section id="dados-disponibilizados" class="level2">
-<h2 class="anchored" data-anchor-id="dados-disponibilizados">Dados disponibilizados</h2>
-<p>Os dados para treinamento e teste do modelo estão disponíveis no formato CSV, em um arquivo zip disponível <a href="./www/data.zip">neste link</a>.</p>
-<p>Após extrair os arquivos, utiliza a biblioteca Pandas para carregar os <code>DataFrames</code> <code>data_train</code> e <code>data_test</code>, como mostrado a seguir:</p>
-<pre><code>import pandas as pd
-
-data_train = pd.read_csv("data_train.csv").drop(columns=["Unnamed: 0"])
-
-data_test = pd.read_csv("data_test.csv").drop(columns=["Unnamed: 0"])</code></pre>
-<div id="47e2fe36-7c00-4edf-b19a-9d66eb164b4e" class="cell" data-outputid="05add7e9-28c3-4a76-808a-d1f224c3c235" data-tags="[]" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_train.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<pre><code>(800, 14)</code></pre>
-</div>
-</div>
-<div id="fa559a86-de48-4cf0-815e-6f1da4a43677" class="cell" data-outputid="a552801f-d5da-4421-efa6-effe6f1abff3" data-tags="[]" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_test.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>(225, 14)</code></pre>
-</div>
-</div>
-<div id="c54a5771-9e98-40c7-997b-439fa1bf3635" class="cell" data-outputid="b75c6ae5-493b-49bf-ed47-365bcd874cf4" data-tags="[]" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_train.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">0</th>
-<th data-quarto-table-cell-role="th">1</th>
-<th data-quarto-table-cell-role="th">2</th>
-<th data-quarto-table-cell-role="th">3</th>
-<th data-quarto-table-cell-role="th">4</th>
-<th data-quarto-table-cell-role="th">5</th>
-<th data-quarto-table-cell-role="th">6</th>
-<th data-quarto-table-cell-role="th">7</th>
-<th data-quarto-table-cell-role="th">8</th>
-<th data-quarto-table-cell-role="th">9</th>
-<th data-quarto-table-cell-role="th">10</th>
-<th data-quarto-table-cell-role="th">11</th>
-<th data-quarto-table-cell-role="th">12</th>
-<th data-quarto-table-cell-role="th">13</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>52.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>125.0</td>
-<td>212.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>168.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>2.0</td>
-<td>2.0</td>
-<td>3.0</td>
-<td>0.0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>53.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>140.0</td>
-<td>203.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>155.0</td>
-<td>1.0</td>
-<td>3.1</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>3.0</td>
-<td>0.0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>70.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>145.0</td>
-<td>174.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>125.0</td>
-<td>1.0</td>
-<td>2.6</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>3.0</td>
-<td>0.0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>61.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>148.0</td>
-<td>203.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>161.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>2.0</td>
-<td>1.0</td>
-<td>3.0</td>
-<td>0.0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>62.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>138.0</td>
-<td>294.0</td>
-<td>1.0</td>
-<td>1.0</td>
-<td>106.0</td>
-<td>0.0</td>
-<td>1.9</td>
-<td>1.0</td>
-<td>3.0</td>
-<td>2.0</td>
-<td>0.0</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<div id="0cb2e362-eb20-4789-a80e-6d710dde56f0" class="cell" data-outputid="552e24ce-ad22-4e8b-dece-968e9fcb4f5d" data-tags="[]" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_test.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">0</th>
-<th data-quarto-table-cell-role="th">1</th>
-<th data-quarto-table-cell-role="th">2</th>
-<th data-quarto-table-cell-role="th">3</th>
-<th data-quarto-table-cell-role="th">4</th>
-<th data-quarto-table-cell-role="th">5</th>
-<th data-quarto-table-cell-role="th">6</th>
-<th data-quarto-table-cell-role="th">7</th>
-<th data-quarto-table-cell-role="th">8</th>
-<th data-quarto-table-cell-role="th">9</th>
-<th data-quarto-table-cell-role="th">10</th>
-<th data-quarto-table-cell-role="th">11</th>
-<th data-quarto-table-cell-role="th">12</th>
-<th data-quarto-table-cell-role="th">13</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>67.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>120.0</td>
-<td>229.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>129.0</td>
-<td>1.0</td>
-<td>2.6</td>
-<td>1.0</td>
-<td>2.0</td>
-<td>3.0</td>
-<td>0.0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>63.0</td>
-<td>1.0</td>
-<td>3.0</td>
-<td>145.0</td>
-<td>233.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>150.0</td>
-<td>0.0</td>
-<td>2.3</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>1.0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>63.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>124.0</td>
-<td>197.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>136.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>2.0</td>
-<td>0.0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>52.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>112.0</td>
-<td>230.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>160.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>2.0</td>
-<td>1.0</td>
-<td>2.0</td>
-<td>0.0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>58.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>130.0</td>
-<td>197.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>131.0</td>
-<td>0.0</td>
-<td>0.6</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>2.0</td>
-<td>1.0</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<p>Como mostrado, os dados consistem de 800 exemplos de treinamento e 225 para teste, cada um contendo 13 características de entrada, representadas pelas colunas de 0 a 12 e a saída desejada binária, indicando se o paciente é portador ou não da doença, representada pela coluna 13.</p>
-<p>Em um projeto na área de ciência de dados, é essencial a exploração e tratamento dos dados para filtrar dados inadequados, preencher dados faltantes, aplicar esquemas de normalização ou selecionar colunas mais adequadas com base em análise quantitativa ou alguma informação prévia relativa à interpretação dos dados no contexto em questão. No entanto, neste projeto, <strong>o foco será a exploração do modelo</strong>, dado o conjunto de dados já processado. Por isso, não são fornecidos detalhes sobre o significado de cada uma das colunas da entrada. Se desejar, você pode trabalhar na exploração dos dados para melhorar o desempenho do modelo mas essa atividade não será levada em conta na avaliação.</p>
-</section>
-<section id="objetivo" class="level2">
-<h2 class="anchored" data-anchor-id="objetivo">Objetivo</h2>
-<p>O objetivo do projeto é obter um modelo baseado em uma rede neural, que receba o vetor com o conjunto de características da entrada e forneça a classificação binária indicando se o paciente é portador ou não da doença.</p>
-<p>Para fins de avaliação do desempenho do seu modelo, você deve compará-lo com o resultado obtido com o modelo de regressão logística, que pode ser interpretado como um modelo constituído por único neurônio, alimentado por todas as entradas, com a função de ativação sigmoidal, o que faz com que sua saída esteja no intervalo de 0 a 1.</p>
-<p>Projete o modelo, considerando as arquiteturas e as técnicas que foram vistas no curso e realize o treinamento utilizando os dados de <code>data_train</code>. Em seguida, teste o modelo fazendo inferência para os dados de <code>data_test</code>.</p>
-<p>Leve em conta que o treinamento pode sofrer <em>overfitting</em> e use os mecanismos vistos no curso para evitá-lo. Para monitorar o <em>overfitting</em>, utilize os dados de teste para fazer validação e observe as curvas de aprendizagem para os dados de treinamento e validação. Procure salvar o modelo treinado ao final de cada época, de forma que seja possível carregar o melhor modelo com base na escolha da melhor condição de acordo com as curvas de aprendizagem de treinamento e validação.</p>
-<p>Para implementação do modelo e treinamento da rede neural, a sugestão é que seja utilizado um <em>framework</em> de redes neurais, como o PyTorch, conforme exemplo mostrado no <a href="https://psi3471.github.io/exemplo_pytorch.html">material de apoio</a>. No entanto, isso não é obrigatório, podendo ser utilizada outra solução ou mesmo outra linguagem de programação, caso desejado.</p>
-<p>No final do exercício, você deve apresentar:</p>
-<ol type="1">
-<li>Sua escolha para a arquitetura do modelo e os valores dos hiperparâmetros;</li>
-<li>Os códigos utilizados para treinamento e teste;</li>
-<li>A curva de aprendizado de treinamento e validação ao longo das épocas;</li>
-<li>Usando os dados de teste, a matriz de confusão, a acurácia e o F1-score obtidos e uma interpretação desses resultados (como referência, utilize o material sobre <a href="https://psi3471.github.io/medidas.html">medidas de desempenho</a>);</li>
-<li>A comparação dos resultados de 4. com os resultados obtidos utilizando um modelo de regressão logística.</li>
-</ol>
-<p>Caso utilize o PyTorch, seguem algumas observações e dicas:</p>
-<ul>
-<li>Caso deseje utilizar a função custo da entropia cruzada, utilize a <a href="https://pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html"><code>BCEWithLogitsLoss</code></a> em vez da <code>BCELoss</code> pois ela é numericamente mais estável e provavelmente vai proporcionar resultados melhores. Note que a <a href="https://pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html"><code>BCEWithLogitsLoss</code></a> espera receber <em>logits</em>, que não são normalizados e podem valer de <span class="math inline">\(-\infty\)</span> a <span class="math inline">\(\infty\)</span>. Ou seja, ao usar a <a href="https://pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html"><code>BCEWithLogitsLoss</code></a>, a função de ativação do neurônio de saída deve ser linear;</li>
-<li>No PyTorch, para salvar os pesos de um modelo representado pelo objeto <code>model</code> no arquivo <code>model01.pt</code>, pode-se usar a linha:</li>
-</ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>torch.save(model.state_dict(), <span class="st">"./model01.pt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>E, depois, para carregar os pesos do modelo, pode ser usada a linha:</li>
-</ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model.load_state_dict(torch.load(<span class="st">"./model01.pt"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="instruções-para-entrega" class="level2">
-<h2 class="anchored" data-anchor-id="instruções-para-entrega">Instruções para entrega</h2>
-<ul>
-<li><p>O exercício deve ser feito <strong>individualmente</strong>;</p></li>
-<li><p>A entrega deve incluir:</p>
-<ul>
-<li>Um vídeo de no <strong>máximo 1m30s</strong>, mostrando a resolução do exercício;</li>
-<li>Os <strong>códigos-fontes</strong> dos programas, preferencialmente organizados em um Jupyter Notebook, descrevendo o experimento e mostrando como foram obtidos os resultados solicitados.</li>
-</ul></li>
-<li><p>Sobre o vídeo:</p>
-<ul>
-<li><strong>Deve incluir áudio</strong> descrevendo o experimento;</li>
-<li>Gravem a tela do computador usando celular ou usando algum programa de captura de tela (por exemplo Zoom, Google Meet, ou OBS Studio);</li>
-<li>No início, <strong>deve aparecer o rosto e algum documento do aluno que gravou o vídeo</strong> (como a carteira USP, RG, CNH, etc);</li>
-<li>Tentem fazer um bom aproveitamento do tempo para apresentar os resultados solicitados, <strong>respeitando o limite de 1m30s e não acelerem a velocidade do vídeo</strong>;</li>
-</ul></li>
-<li><p>Sobre os códigos-fonte:</p>
-<ul>
-<li><strong>Incluir o nome do aluno</strong> no início do programa;</li>
-</ul></li>
-<li><p>Sobre o envio no Moodle:</p>
-<ul>
-<li>Podem ser enviados o arquivo de vídeo (.mkv, .mp4, .avi, etc.) ou um link para o vídeo (Youtube, Google Drive, etc);
-<ul>
-<li>No segundo caso, certifiquem-se que todos os professores/pesquisadores (magno.silva@usp.br, hae.kim@usp.br, renatocan@lps.usp.br, wesleybeccaro@usp.br) tenham acesso ao seu vídeo.</li>
-</ul></li>
-<li>Não se esqueçam de escrever o nome do aluno em três lugares diferentes: <strong>no campo “comentários sobre o envio” no Moodle</strong>, <strong>no início do vídeo</strong> e no <strong>início dos códigos-fonte</strong>.</li>
-</ul></li>
-</ul>
-</section>
+<p><a href="https://github.com/psi5892/exercicios_aula_publico/blob/main/ex_medidas/ex_medidas.ipynb">Jupyter Notebook do exercício</a></p>
 </div>
 
 
@@ -681,12 +315,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiada");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiada");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
