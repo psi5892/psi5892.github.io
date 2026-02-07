@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Tópicos sobre o framework PyTorch – PSI5892</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e0b2e4e5c4db31b3b64fdef51415d7d2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">PSI5892</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-teoria" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Teoria</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-teoria">    
+        <li>
+    <a class="dropdown-item" href="./t_introducao.html">
+ <span class="dropdown-text">Introdução</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_regressao_linear.html">
+ <span class="dropdown-text">Regressão linear</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_lms.html">
+ <span class="dropdown-text">O algoritmo LMS</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_neuronio.html">
+ <span class="dropdown-text">O modelo do neurônio</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_mlp.html">
+ <span class="dropdown-text">A rede perceptron multicamada</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_hiperparametros.html">
+ <span class="dropdown-text">Evitando mínimos locais e <em>overfitting</em></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_autodiff.html">
+ <span class="dropdown-text">Introdução à diferenciação automática</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_pytorch_topicos.html">
+ <span class="dropdown-text">Tópicos sobre o <em>framework</em> PyTorch</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_pytorch_exemplo_mlp.html">
+ <span class="dropdown-text">Implementação da rede MLP com PyTorch</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_medidas.html">
+ <span class="dropdown-text">Medidas de desempenho</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_pca.html">
+ <span class="dropdown-text">Análise de Componentes Principais</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./t_lda.html">
+ <span class="dropdown-text">Análise de Discriminantes Lineares</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-material-de-apoio" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Material de apoio</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-material-de-apoio">    
+        <li>
+    <a class="dropdown-item" href="./ap_python_topicos.html">
+ <span class="dropdown-text">Tópicos de programação com Python</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tópicos sobre o <em>framework</em> PyTorch</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>No Google Colab, é necessário habilitar o suporte à GPU acessando “Change Runtime Type” e selecionando uma opção com GPU como, por exemplo, a “T4 GPU”.</p>
+<div class="justify">
+<p>O <a href="https://pytorch.org/">PyTorch</a> é um dos <em>frameworks</em> mais utilizados para o treinamento de modelos de aprendizado de máquina. A seguir, são listados os seus principais componentes e é mostrado um exemplo evoluindo de um algoritmo adaptativo implementado em NumPy, incorporando componentes do PyTorch um a um, até chegar em uma implementação clássica do algoritmo usando PyTorch.</p>
+<p>Antes disso, vamos carregar as bibliotecas necessárias:</p>
+<div id="b73fa215-ddc3-4eec-af8e-cf89fd0af921" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> signal</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="tensores-e-operações-básicas" class="level2">
+<h2 class="anchored" data-anchor-id="tensores-e-operações-básicas">Tensores e operações básicas</h2>
+<ul>
+<li><p>Objetos do tipo <code>torch.Tensor</code>, semelhantes à <em>arrays</em> do NumPy, mas com algumas funções adicionais:</p>
+<ul>
+<li>Podem ser alocados facilmente na GPU;</li>
+<li>Possibilidade de cálculo automático de gradientes.</li>
+</ul></li>
+<li><p>Ref.: <a href="https://pytorch.org/docs/stable/tensors.html">https://pytorch.org/docs/stable/tensors.html</a></p></li>
+<li><p>Podem ser criados a partir de listas do Python:</p></li>
+</ul>
+<div id="b62458ad-0a67-456a-99b1-dd3682a564a5" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>torch.tensor([<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre data-code-line-numbers=""><code>tensor([2, 3, 4])</code></pre>
+</div>
+</div>
+<ul>
+<li>Atributos de <em>shape</em> e <em>rank</em> semelhantes aos <em>arrays</em> do NumPy:</li>
+</ul>
+<div id="ef1ddc15-a032-4d09-a3d7-7830df6543a1" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor([<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>])</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre data-code-line-numbers=""><code>torch.Size([3])</code></pre>
+</div>
+</div>
+<div id="c2cb80a5-9462-4bb1-b91a-277a2866f65c" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor([[<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre data-code-line-numbers=""><code>torch.Size([1, 3])</code></pre>
+</div>
+</div>
+<ul>
+<li>Tipo padrão para representação de ponto flutuante é o <code>float32</code>:</li>
+</ul>
+<div id="4e7437ef-3680-4114-8ce4-28eb4372c060" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor([[<span class="fl">2.</span>, <span class="fl">3.</span>, <span class="fl">4.</span>]])</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre data-code-line-numbers=""><code>torch.float32</code></pre>
+</div>
+</div>
+<ul>
+<li>Funções auxiliares para criação de tensores com zeros, uns, aleatórios e matrizes identidade:</li>
+</ul>
+<div id="c0b0d5ff-7716-4953-9cfe-8895f1b50930" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>torch.zeros((<span class="dv">2</span>, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre data-code-line-numbers=""><code>tensor([[0., 0., 0.],
+        [0., 0., 0.]])</code></pre>
+</div>
+</div>
+<div id="b15a953c-2812-4ff2-b327-b9b8b7b3c092" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>torch.ones((<span class="dv">3</span>, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre data-code-line-numbers=""><code>tensor([[1., 1.],
+        [1., 1.],
+        [1., 1.]])</code></pre>
+</div>
+</div>
+<div id="c545f8b5-bd52-4e46-9487-b605d63ee40c" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>torch.rand(<span class="dv">2</span>, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre data-code-line-numbers=""><code>tensor([[0.1710, 0.2434],
+        [0.2614, 0.6550]])</code></pre>
+</div>
+</div>
+<div id="59400240-30e6-4ea0-8167-ea6b83208f7e" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>torch.randn(<span class="dv">3</span>, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre data-code-line-numbers=""><code>tensor([[ 2.2044, -0.7878, -1.0922],
+        [ 0.0309, -0.4513,  1.5449],
+        [ 0.3358,  0.2322,  0.2016]])</code></pre>
+</div>
+</div>
+<div id="dea2674b-7ab4-40c2-b307-ea8ddfd5b467" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>torch.eye(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre data-code-line-numbers=""><code>tensor([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]])</code></pre>
+</div>
+</div>
+<ul>
+<li>Funções auxiliares para criação de sequências:</li>
+</ul>
+<div id="a1bd3d97-cd22-4295-b8b5-33840b6034c4" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>torch.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre data-code-line-numbers=""><code>tensor([0.0000, 0.1111, 0.2222, 0.3333, 0.4444, 0.5556, 0.6667, 0.7778, 0.8889,
+        1.0000])</code></pre>
+</div>
+</div>
+<div id="d168fcd1-15ce-4f51-9715-5b5ad54f72f4" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>torch.arange(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre data-code-line-numbers=""><code>tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</code></pre>
+</div>
+</div>
+<ul>
+<li><code>reshape</code>e <code>view</code>: são semelhantes, mas
+<ul>
+<li><code>view</code> usa os mesmos dados do tensor original. Não funciona para o caso de dados não contíguos;</li>
+<li><code>reshape</code> tenta fazer o mesmo que <code>view</code>, mas no caso de dados não contíguos, retorna um tensor com uma cópia dos dados originais.</li>
+</ul></li>
+<li>A sugestão é usar sempre <code>view</code>;</li>
+<li>Ref.: <a href="https://stackoverflow.com/questions/49643225/whats-the-difference-between-reshape-and-view-in-pytorch">https://stackoverflow.com/questions/49643225/whats-the-difference-between-reshape-and-view-in-pytorch</a></li>
+</ul>
+<div id="70b8ccc6-03f6-48ed-9c2c-27d1f986e9ee" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.rand(<span class="dv">4</span>,<span class="dv">3</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre data-code-line-numbers=""><code>tensor([[0.1625, 0.3299, 0.0073],
+        [0.2945, 0.8182, 0.0982],
+        [0.6897, 0.5476, 0.5530],
+        [0.8207, 0.0292, 0.2640]])</code></pre>
+</div>
+</div>
+<div id="24d79cfe-0c56-4d7f-ae01-bee99ddd1830" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>x.view(<span class="dv">12</span>, <span class="op">-</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre data-code-line-numbers=""><code>tensor([[0.1625],
+        [0.3299],
+        [0.0073],
+        [0.2945],
+        [0.8182],
+        [0.0982],
+        [0.6897],
+        [0.5476],
+        [0.5530],
+        [0.8207],
+        [0.0292],
+        [0.2640]])</code></pre>
+</div>
+</div>
+<div id="9f9d333a-0945-4e69-84c0-cfb16c5ca5ef" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>x.reshape(<span class="dv">12</span>, <span class="op">-</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre data-code-line-numbers=""><code>tensor([[0.1625],
+        [0.3299],
+        [0.0073],
+        [0.2945],
+        [0.8182],
+        [0.0982],
+        [0.6897],
+        [0.5476],
+        [0.5530],
+        [0.8207],
+        [0.0292],
+        [0.2640]])</code></pre>
+</div>
+</div>
+<section id="operações" class="level3">
+<h3 class="anchored" data-anchor-id="operações">Operações</h3>
+<ul>
+<li>Operações aritméticas e matriciais semelhantes às do NumPy;</li>
+<li>PyTorch disponibiliza diversas operações ponto a ponto como <code>torch.abs()</code> e <code>torch.cos()</code> e diversas operações de redução como <code>torch.sum()</code> e <code>torch.mean()</code>;</li>
+<li>É importante utilizar as operações do PyTorch para processar os tensores, para que seja possível calcular o gradiente automaticamente com o autograd;</li>
+<li>Além disso, há diversas operações de comparação, espectrais e outras.</li>
+<li>Referência: <a href="https://pytorch.org/docs/stable/torch.html#math-operations">https://pytorch.org/docs/stable/torch.html#math-operations</a></li>
+</ul>
+</section>
+<section id="alocação-em-cpu-e-em-gpu" class="level3">
+<h3 class="anchored" data-anchor-id="alocação-em-cpu-e-em-gpu">Alocação em CPU e em GPU</h3>
+<ul>
+<li>Atributo <code>is_cuda</code> permite ver se o tensor está alocado na GPU:</li>
+</ul>
+<div id="73a7471e-fcf5-4de5-a612-f8d946a68b30" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.Tensor([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="f2c7eeb0-4200-4792-9aea-29e263be4309" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x.is_cuda</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre data-code-line-numbers=""><code>False</code></pre>
+</div>
+</div>
+<ul>
+<li>Para alocar na GPU, é necessário criar um objeto device e usar o método <code>.to()</code>:</li>
+</ul>
+<div id="1c53ea04-778b-4e47-84aa-bc3c895acc94" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">"cuda"</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x.to(device)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="f7cd2eba-5145-4ca1-a91d-3beae9d4f453" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>x.is_cuda</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre data-code-line-numbers=""><code>True</code></pre>
+</div>
+</div>
+<ul>
+<li>É possível ver se há GPU disponível com o método <code>torch.cuda.is_available()</code>:</li>
+</ul>
+<div id="49c6b266-bfc9-49cc-8fe2-c0ee43c18a42" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>torch.cuda.is_available() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre data-code-line-numbers=""><code>True</code></pre>
+</div>
+</div>
+<ul>
+<li>É usual usar a seguinte estrutura para alocação automática de tensores na GPU, quando disponível:</li>
+</ul>
+<div id="6ce64aa4-922f-4604-926c-3f9d5eae8f3a" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">"cuda:0"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x.to(device)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Para trazer realocar um tensor de volta à CPU, pode-se usar <code>.cpu()</code>:</li>
+</ul>
+<div id="195a134d-0722-4bdc-8de6-aecb5fbb1f40" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>x.is_cuda</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre data-code-line-numbers=""><code>True</code></pre>
+</div>
+</div>
+<div id="d077c569-8975-4d86-be83-63b7fed419d4" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x.cpu()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="6b2ff380-454a-4198-a50f-4a14be58276f" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>x.is_cuda</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre data-code-line-numbers=""><code>False</code></pre>
+</div>
+</div>
+<ul>
+<li>O método <code>.to()</code> também é usado para fazer <em>casting</em> de tensores:</li>
+</ul>
+<div id="90e34459-55ac-4c18-a6c6-5d3f6c1fc6e6" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>x.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre data-code-line-numbers=""><code>torch.float32</code></pre>
+</div>
+</div>
+<div id="f3bba196-2e98-401f-9f0d-2d0f5c0fc008" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x.to(torch.float64)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>y.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre data-code-line-numbers=""><code>torch.float64</code></pre>
+</div>
+</div>
+</section>
+<section id="conversão-de-dados-para-numpy-e-vice-versa" class="level3">
+<h3 class="anchored" data-anchor-id="conversão-de-dados-para-numpy-e-vice-versa">Conversão de dados para NumPy e vice-versa</h3>
+<ul>
+<li>Um tensor do PyTorch pode ser convertido para um <em>array</em> do NumPy usando o método <code>.numpy()</code>:</li>
+</ul>
+<div id="3991cab5-2579-45a8-a621-12599b9ce089" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.randn(<span class="dv">5</span>,<span class="dv">5</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre data-code-line-numbers=""><code>tensor([[ 0.0226,  1.1913,  0.9024,  0.1993,  1.4604],
+        [ 0.4746, -0.0730, -0.3775, -0.3115,  0.0461],
+        [-0.1660,  0.2899,  1.5823, -0.0143,  1.0010],
+        [ 1.3880, -0.7835,  1.2934, -1.7216, -0.3019],
+        [ 1.1091,  0.1235, -0.8572,  0.1827, -1.4729]])</code></pre>
+</div>
+</div>
+<div id="d0015301-2cb1-4df5-a408-749a5b5c4beb" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>x.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre data-code-line-numbers=""><code>torch.float32</code></pre>
+</div>
+</div>
+<div id="c131058a-7431-4951-a66f-ff4be708fb09" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>x_np <span class="op">=</span> x.numpy()</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>x_np</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre data-code-line-numbers=""><code>array([[ 0.02260382,  1.1912687 ,  0.902434  ,  0.19927278,  1.4604093 ],
+       [ 0.4746041 , -0.0730461 , -0.3775207 , -0.31152746,  0.04614168],
+       [-0.16600847,  0.28993207,  1.5822891 , -0.01425551,  1.0010148 ],
+       [ 1.3880016 , -0.7835027 ,  1.2933816 , -1.7216129 , -0.30192617],
+       [ 1.1091497 ,  0.12347655, -0.8571574 ,  0.18268453, -1.4728575 ]],
+      dtype=float32)</code></pre>
+</div>
+</div>
+<div id="a345f844-af3f-4fd4-803b-5de42c33533b" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>x_np.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre data-code-line-numbers=""><code>dtype('float32')</code></pre>
+</div>
+</div>
+<ul>
+<li><code>torch.Tensor</code> pode criar um tensor PyTorch a partir de um <em>array</em> do NumPy, mas é necessário atenção à precisão numérica:</li>
+</ul>
+<div id="a70cd7ad-8ee7-4884-a1cd-02ebc1f65d7d" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>x_np <span class="op">=</span> np.random.randn(<span class="dv">5</span>,<span class="dv">5</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>x_np</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre data-code-line-numbers=""><code>array([[-1.15333332, -1.68247501,  0.26655873,  1.01178785, -0.87462355],
+       [-1.6621385 ,  0.21882814,  0.12260001,  0.50508408,  0.44652293],
+       [-1.14593503, -0.42022754, -0.63663901, -0.32429263,  1.12014158],
+       [ 1.07981783,  0.69727713,  0.08246118, -1.24697262,  1.4056202 ],
+       [ 0.56203902,  0.69106794,  0.31189597,  0.24461639, -0.62747763]])</code></pre>
+</div>
+</div>
+<div id="380b19fa-ee99-4d5c-bed4-15447b59cded" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>x_np.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre data-code-line-numbers=""><code>dtype('float64')</code></pre>
+</div>
+</div>
+<div id="61f2bfad-9ab3-456c-b1f3-4a9ca87f1c09" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.Tensor(x_np,)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre data-code-line-numbers=""><code>tensor([[-1.1533, -1.6825,  0.2666,  1.0118, -0.8746],
+        [-1.6621,  0.2188,  0.1226,  0.5051,  0.4465],
+        [-1.1459, -0.4202, -0.6366, -0.3243,  1.1201],
+        [ 1.0798,  0.6973,  0.0825, -1.2470,  1.4056],
+        [ 0.5620,  0.6911,  0.3119,  0.2446, -0.6275]])</code></pre>
+</div>
+</div>
+<div id="83aaad34-7be8-42e8-bf99-179a017a14e6" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>x.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre data-code-line-numbers=""><code>torch.float32</code></pre>
+</div>
+</div>
+<ul>
+<li>A função <code>torch.from_numpy</code> preserva o tipo do <em>array</em> NumPy:</li>
+</ul>
+<div id="097ecdca-4139-4fe6-b3ea-a7270eb4a245" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> torch.from_numpy(x_np)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>x2.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<pre data-code-line-numbers=""><code>torch.float64</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="autograd" class="level2">
+<h2 class="anchored" data-anchor-id="autograd">Autograd</h2>
+<ul>
+<li>Tensores com o atributo <code>requires_grad=True</code> têm o gradiente calculado automaticamente;</li>
+<li>Só vetores do tipo <code>float</code> ou <code>complex</code> podem usar <code>requires_grad=True</code>.</li>
+</ul>
+<div id="11d1d64d-2b7c-45c0-9012-15f4a6fd6b73" class="cell" data-execution_count="37">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> torch.tensor([<span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">3.</span>], requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>x0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<pre data-code-line-numbers=""><code>tensor([1., 2., 3.], requires_grad=True)</code></pre>
+</div>
+</div>
+<div id="ef3c7e96-db53-497b-b811-906552cdaae7" class="cell" data-execution_count="38">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> torch.tensor([<span class="fl">4.</span>, <span class="fl">5.</span>, <span class="fl">6.</span>], requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>x1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre data-code-line-numbers=""><code>tensor([4., 5., 6.], requires_grad=True)</code></pre>
+</div>
+</div>
+<ul>
+<li>Tensores criados a partir de outros com <code>requires_grad=True</code> também têm <code>requires_grad=True</code>:</li>
+</ul>
+<div id="85d028f9-0d09-4b80-817e-3da3c3ec366a" class="cell" data-execution_count="39">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> torch.<span class="bu">sum</span>(x0<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="109f9d2b-6de1-40ab-92e3-e9e1adda08d8" class="cell" data-execution_count="40">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>f.requires_grad</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
+<pre data-code-line-numbers=""><code>True</code></pre>
+</div>
+</div>
+<ul>
+<li>Tensores criados pelo usuário são <em>leaf nodes</em> no grafo, identificados pelo atributo <code>is_leaf</code>:</li>
+</ul>
+<div id="a6698143-f6ce-41ba-800e-8253d93de691" class="cell" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>x0.is_leaf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<pre data-code-line-numbers=""><code>True</code></pre>
+</div>
+</div>
+<div id="3de7e678-4cb5-49a5-bdb6-f9f16960285b" class="cell" data-execution_count="42">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>x1.is_leaf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<pre data-code-line-numbers=""><code>True</code></pre>
+</div>
+</div>
+<div id="d844a5ae-0bf6-4f8d-bd10-4af83aa5710c" class="cell" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>f.is_leaf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<pre data-code-line-numbers=""><code>False</code></pre>
+</div>
+</div>
+<ul>
+<li>Gradiente de <code>f</code> em relação <code>x0</code> e <code>x1</code>:</li>
+</ul>
+<p><span class="math display">\[
+\frac{\partial f}{\partial \mathbf{x}} =
+\left[
+\begin{matrix}
+\frac{\partial f}{\partial x_0}\\
+\frac{\partial f}{\partial x_1}\\
+\end{matrix}
+\right] =
+\left[
+\begin{matrix}
+2x_0\\
+1\\
+\end{matrix}
+\right]
+\]</span></p>
+<ul>
+<li>Os gradientes são armazenados no atributo <code>grad</code>, inicialmente igual a <code>None</code>:</li>
+</ul>
+<div id="1b3d5c07-8c93-4b18-8167-93d2e5cfffbe" class="cell" data-execution_count="44">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>x0.grad <span class="kw">is</span> <span class="va">None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="44">
+<pre data-code-line-numbers=""><code>True</code></pre>
+</div>
+</div>
+<div id="9ddc3195-8a73-4213-b175-8f7d534bbdc8" class="cell" data-execution_count="45">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>x1.grad <span class="kw">is</span> <span class="va">None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="45">
+<pre data-code-line-numbers=""><code>True</code></pre>
+</div>
+</div>
+<ul>
+<li>Para que os gradientes sejam calculados, é necessário executar o método <code>.backward()</code> do nó em relação ao qual se deseja calculá-los:</li>
+</ul>
+<div id="a784133e-a195-4243-bd55-b90f0d78be48" class="cell" data-execution_count="46">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>f.backward()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="6030b725-fe7c-4558-9485-8af2c116bf82" class="cell" data-execution_count="47">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>x0.grad</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="47">
+<pre data-code-line-numbers=""><code>tensor([2., 4., 6.])</code></pre>
+</div>
+</div>
+<div id="05c53638-833e-4103-841f-8e46e9b8fea9" class="cell" data-execution_count="48">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>x0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+<pre data-code-line-numbers=""><code>tensor([1., 2., 3.], requires_grad=True)</code></pre>
+</div>
+</div>
+<div id="443dc767-95cf-4e69-9d27-dfea990d3e2c" class="cell" data-execution_count="49">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>x1.grad</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="49">
+<pre data-code-line-numbers=""><code>tensor([1., 1., 1.])</code></pre>
+</div>
+</div>
+<div id="53d509cb-63fa-4a9e-82b2-4e054b0a25e7" class="cell" data-execution_count="50">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>x1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="50">
+<pre data-code-line-numbers=""><code>tensor([4., 5., 6.], requires_grad=True)</code></pre>
+</div>
+</div>
+</section>
+<section id="do-numpy-ao-pytorch" class="level2">
+<h2 class="anchored" data-anchor-id="do-numpy-ao-pytorch">Do NumPy ao PyTorch</h2>
+<p>A seguir, serão apresentados os principais elementos do PyTorch, partindo de um exemplo de treinamento de um modelo com o LMS implementado com o NumPy. Serão abordados:</p>
+<ul>
+<li>Uso de tensores PyTorch;</li>
+<li>Uso do autograd;</li>
+<li>Blocos para função custo;</li>
+<li>Blocos para otimizadores;</li>
+<li>Uso de objetos representando modelos PyTorch;</li>
+<li>Uso de blocos PyTorch para a composição de modelos.</li>
+</ul>
+<p>As mudanças no código serão indicadas por comentários.</p>
+<section id="começando-pelo-numpy" class="level3">
+<h3 class="anchored" data-anchor-id="começando-pelo-numpy">Começando pelo NumPy</h3>
+<ul>
+<li>Código para treinamento de um modelo com o LMS para identificação de sistemas:</li>
+</ul>
+<div id="93b9d748-c908-4ca0-ab83-1f98dc00923d" class="cell" data-execution_count="51">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>sigmav2 <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>eta <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.randn(N, <span class="dv">1</span>)</span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>wo <span class="op">=</span> np.array([[<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>]])</span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> signal.lfilter(wo.squeeze(), <span class="dv">1</span>, x.squeeze()) <span class="op">+</span> np.sqrt(sigmav2) <span class="op">*</span> np.random.randn(N)</span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> d.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="3e7dfd21-fabc-4bf9-8a61-26a01b43e582" class="cell" data-execution_count="52">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms(x, d, eta, M):</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>    xM <span class="op">=</span> np.zeros((M, <span class="dv">1</span>))</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>    wi <span class="op">=</span> np.zeros((<span class="dv">1</span>, M))    </span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> np.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> np.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> np.zeros((N <span class="op">+</span> <span class="dv">1</span>, M))</span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>        xM <span class="op">=</span> np.vstack((x[i : i <span class="op">+</span> <span class="dv">1</span>, [<span class="dv">0</span>]], xM[<span class="dv">0</span> : M <span class="op">-</span> <span class="dv">1</span>, [<span class="dv">0</span>]]))</span>
+<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> wi <span class="op">@</span> xM</span>
+<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>        ei <span class="op">=</span> d[i] <span class="op">-</span> yi</span>
+<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>        wi <span class="op">=</span> wi <span class="op">+</span> eta<span class="op">/</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span> <span class="op">*</span> ei <span class="op">*</span> xM.T</span>
+<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>        y[i] <span class="op">=</span> yi</span>
+<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>        e[i] <span class="op">=</span> ei</span>
+<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>        w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> wi</span>
+<span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, e, w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="b4652b7a-eca9-45cf-9008-c7ac99aaa7fc" class="cell" data-scrolled="true" data-execution_count="53">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>(y_lms, e_lms, w_lms) <span class="op">=</span> lms(x, d, eta, M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Vamos comparar a evolução dos pesos, usando a seguinte função:</li>
+</ul>
+<div id="58e36a86-9b7c-40f6-9899-dcb1199154c2" class="cell" data-execution_count="54">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_ws(w, w_lms):</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>    plt.plot(w, <span class="st">"b"</span>)</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>    plt.plot(w_lms, <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="dv">5</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"iterações"</span>)</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"coeficientes"</span>)</span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>    plt.grid()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="3ee87171-df96-4652-9a33-48a3214cc860" class="cell" data-execution_count="55">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>plot_ws(w_lms, w_lms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="t_pytorch_topicos_files/figure-html/cell-56-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="uso-de-tensores-pytorch" class="level3">
+<h3 class="anchored" data-anchor-id="uso-de-tensores-pytorch">Uso de tensores PyTorch</h3>
+<ul>
+<li>Para manter a precisão numérica padrão do NumPy, vamos configurar o PyTorch para usar tensores do tipo <code>float64</code>:</li>
+</ul>
+<div id="bab53450-5426-49aa-b984-3886b7f53b20" class="cell" data-execution_count="56">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>torch.set_default_dtype(torch.float64)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>A forma de uso dos tensores PyTorch é bem semelhante à dos <em>arrays</em> NumPy. Na maioria dos casos, basta trocar a chamada <code>np.</code> por <code>torch.</code>:</li>
+</ul>
+<div id="9838521a-58b1-4886-bb3f-4b92353b58a4" class="cell" data-execution_count="57">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor(x)</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>wo <span class="op">=</span> torch.tensor(wo)</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> torch.tensor(d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="76f8e7c1-1bb9-4baa-a87c-c9842542e38c" class="cell" data-execution_count="58">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms_torch(x, d, eta, M):</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># xM = np.zeros((M, 1))</span></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wi = np.zeros((1, M))</span></span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># y = np.zeros((N, 1))</span></span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># e = np.zeros((N, 1))</span></span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># w = np.zeros((N + 1, M))</span></span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a>    xM <span class="op">=</span> torch.zeros((M, <span class="dv">1</span>))</span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>    wi <span class="op">=</span> torch.zeros((<span class="dv">1</span>, M))</span>
+<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb99-12"><a href="#cb99-12" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb99-13"><a href="#cb99-13" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> torch.zeros(N <span class="op">+</span> <span class="dv">1</span>, M)</span>
+<span id="cb99-14"><a href="#cb99-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb99-15"><a href="#cb99-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb99-16"><a href="#cb99-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb99-17"><a href="#cb99-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># xM = np.vstack((x[i : i + 1, [0]], xM[0 : M - 1, [0]]))</span></span>
+<span id="cb99-18"><a href="#cb99-18" aria-hidden="true" tabindex="-1"></a>        xM <span class="op">=</span> torch.vstack((x[i : i <span class="op">+</span> <span class="dv">1</span>, [<span class="dv">0</span>]], xM[<span class="dv">0</span> : M <span class="op">-</span> <span class="dv">1</span>, [<span class="dv">0</span>]]))</span>
+<span id="cb99-19"><a href="#cb99-19" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb99-20"><a href="#cb99-20" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> wi <span class="op">@</span> xM</span>
+<span id="cb99-21"><a href="#cb99-21" aria-hidden="true" tabindex="-1"></a>        ei <span class="op">=</span> d[i] <span class="op">-</span> yi</span>
+<span id="cb99-22"><a href="#cb99-22" aria-hidden="true" tabindex="-1"></a>        wi <span class="op">=</span> wi <span class="op">+</span> eta<span class="op">/</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">2</span> <span class="op">*</span> ei <span class="op">*</span> xM.T</span>
+<span id="cb99-23"><a href="#cb99-23" aria-hidden="true" tabindex="-1"></a>        y[i] <span class="op">=</span> yi</span>
+<span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a>        e[i] <span class="op">=</span> ei</span>
+<span id="cb99-25"><a href="#cb99-25" aria-hidden="true" tabindex="-1"></a>        w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> wi</span>
+<span id="cb99-26"><a href="#cb99-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, e, w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="6ec3b21d-9c13-4e81-94c0-7a187837fb11" class="cell" data-execution_count="59">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb100" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>(y_torch, e_torch, w_torch) <span class="op">=</span> lms_torch(x, d, eta, M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="036b7c4f-cea9-47ce-a68a-03c054e0de11" class="cell" data-execution_count="60">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>plot_ws(w_torch.numpy(), w_lms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="t_pytorch_topicos_files/figure-html/cell-61-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="uso-do-autograd" class="level3">
+<h3 class="anchored" data-anchor-id="uso-do-autograd">Uso do autograd</h3>
+<ul>
+<li>Tensores que necessitam do cálculo do gradiente, devem ter o atributo <code>requires_grad=True</code>;</li>
+<li>Gradientes são calculados utilizando o método <code>.backward()</code> chamado no objeto que representa o nó em relação ao qual desejamos calcular os gradientes;</li>
+<li>É necessário tomar cuidado com operações para as quais não queremos calcular o gradiente. Nesses casos, utilizamos o bloco de contexto <code>with torch.no_grad():</code>;</li>
+<li>Note que é importante não sobrescrever o objeto <code>wi</code> para que os gradientes sejam computados corretamente (uso de <code>wi[:] = (...)</code>);</li>
+<li>A cada chamada de <code>.backward()</code>, os valores dos gradientes são acumulados nos atributos <code>.grad</code> de cada parâmetro do modelo;
+<ul>
+<li>Dessa forma, é necessário zerar os gradientes a cada iteração, usando o método <code>.grad.zero_()</code>.</li>
+</ul></li>
+</ul>
+<div id="1c853de4-9954-49fc-a4af-be7afc663369" class="cell" data-execution_count="61">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb102" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms_torch_autograd(x, d, eta, M):</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>    xM <span class="op">=</span> torch.zeros((M, <span class="dv">1</span>))</span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wi = torch.zeros((1, M))</span></span>
+<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>    wi <span class="op">=</span> torch.zeros((<span class="dv">1</span>, M), requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> torch.zeros(N <span class="op">+</span> <span class="dv">1</span>, M)</span>
+<span id="cb102-11"><a href="#cb102-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb102-12"><a href="#cb102-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb102-13"><a href="#cb102-13" aria-hidden="true" tabindex="-1"></a>        xM <span class="op">=</span> torch.vstack((x[i : i <span class="op">+</span> <span class="dv">1</span>, [<span class="dv">0</span>]], xM[<span class="dv">0</span> : M <span class="op">-</span> <span class="dv">1</span>, [<span class="dv">0</span>]]))</span>
+<span id="cb102-14"><a href="#cb102-14" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> wi <span class="op">@</span> xM</span>
+<span id="cb102-15"><a href="#cb102-15" aria-hidden="true" tabindex="-1"></a>        ei <span class="op">=</span> d[i] <span class="op">-</span> yi        </span>
+<span id="cb102-16"><a href="#cb102-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-17"><a href="#cb102-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Novo</span></span>
+<span id="cb102-18"><a href="#cb102-18" aria-hidden="true" tabindex="-1"></a>        mse <span class="op">=</span> ei<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb102-19"><a href="#cb102-19" aria-hidden="true" tabindex="-1"></a>        mse.backward()</span>
+<span id="cb102-20"><a href="#cb102-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-21"><a href="#cb102-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># wi = wi + eta/2 * 2 * ei * xM.T</span></span>
+<span id="cb102-22"><a href="#cb102-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># y[i] = yi</span></span>
+<span id="cb102-23"><a href="#cb102-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># e[i] = ei</span></span>
+<span id="cb102-24"><a href="#cb102-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># w[i + 1, :] = wi</span></span>
+<span id="cb102-25"><a href="#cb102-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():            </span>
+<span id="cb102-26"><a href="#cb102-26" aria-hidden="true" tabindex="-1"></a>            wi[:] <span class="op">=</span> wi[:] <span class="op">-</span> eta<span class="op">/</span><span class="dv">2</span> <span class="op">*</span> wi.grad</span>
+<span id="cb102-27"><a href="#cb102-27" aria-hidden="true" tabindex="-1"></a>            y[i] <span class="op">=</span> yi</span>
+<span id="cb102-28"><a href="#cb102-28" aria-hidden="true" tabindex="-1"></a>            e[i] <span class="op">=</span> ei</span>
+<span id="cb102-29"><a href="#cb102-29" aria-hidden="true" tabindex="-1"></a>            w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> wi</span>
+<span id="cb102-30"><a href="#cb102-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-31"><a href="#cb102-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Novo    </span></span>
+<span id="cb102-32"><a href="#cb102-32" aria-hidden="true" tabindex="-1"></a>        wi.grad.zero_()</span>
+<span id="cb102-33"><a href="#cb102-33" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb102-34"><a href="#cb102-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, e, w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="f7b095cd-6fc2-470c-94cd-e16ec52b3d90" class="cell" data-execution_count="62">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>(y_torch_autograd, e_torch_autograd, w_torch_autograd) <span class="op">=</span> lms_torch_autograd(x, d, eta, M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="1309c316-c9a4-42b6-8607-1e1faf5d83b5" class="cell" data-execution_count="63">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>plot_ws(w_torch_autograd.numpy(), w_lms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="t_pytorch_topicos_files/figure-html/cell-64-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="blocos-para-função-custo" class="level3">
+<h3 class="anchored" data-anchor-id="blocos-para-função-custo">Blocos para função custo</h3>
+<ul>
+<li>O PyTorch disponibiliza diversos blocos para a representação de funções custo: <a href="https://pytorch.org/docs/stable/nn.html#loss-functions">https://pytorch.org/docs/stable/nn.html#loss-functions</a>;</li>
+<li>Para o caso da função custo MSE, utilizamos o bloco <code>nn.MSELoss</code>.</li>
+</ul>
+<div id="f83b1be3-327a-402a-9f3a-4b1971fe15fe" class="cell" data-execution_count="64">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms_torch_loss(x, d, eta, M):</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>    xM <span class="op">=</span> torch.zeros((M, <span class="dv">1</span>))</span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>    wi <span class="op">=</span> torch.zeros((<span class="dv">1</span>, M), requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#e = torch.zeros((N, 1))</span></span>
+<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-10"><a href="#cb105-10" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> torch.zeros(N <span class="op">+</span> <span class="dv">1</span>, M)</span>
+<span id="cb105-11"><a href="#cb105-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-12"><a href="#cb105-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Novo</span></span>
+<span id="cb105-13"><a href="#cb105-13" aria-hidden="true" tabindex="-1"></a>    loss_function <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb105-14"><a href="#cb105-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb105-15"><a href="#cb105-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb105-16"><a href="#cb105-16" aria-hidden="true" tabindex="-1"></a>        xM <span class="op">=</span> torch.vstack((x[i : i <span class="op">+</span> <span class="dv">1</span>, [<span class="dv">0</span>]], xM[<span class="dv">0</span> : M <span class="op">-</span> <span class="dv">1</span>, [<span class="dv">0</span>]]))</span>
+<span id="cb105-17"><a href="#cb105-17" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> wi <span class="op">@</span> xM</span>
+<span id="cb105-18"><a href="#cb105-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-19"><a href="#cb105-19" aria-hidden="true" tabindex="-1"></a>        <span class="co">#ei = d[i] - yi</span></span>
+<span id="cb105-20"><a href="#cb105-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">#mse = ei**2</span></span>
+<span id="cb105-21"><a href="#cb105-21" aria-hidden="true" tabindex="-1"></a>        <span class="co">#mse.backward()</span></span>
+<span id="cb105-22"><a href="#cb105-22" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss_function(yi.squeeze(), d[i].squeeze())</span>
+<span id="cb105-23"><a href="#cb105-23" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb105-24"><a href="#cb105-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb105-25"><a href="#cb105-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():            </span>
+<span id="cb105-26"><a href="#cb105-26" aria-hidden="true" tabindex="-1"></a>            wi[:] <span class="op">=</span> wi[:] <span class="op">-</span> eta<span class="op">/</span><span class="dv">2</span> <span class="op">*</span> wi.grad</span>
+<span id="cb105-27"><a href="#cb105-27" aria-hidden="true" tabindex="-1"></a>            y[i] <span class="op">=</span> yi</span>
+<span id="cb105-28"><a href="#cb105-28" aria-hidden="true" tabindex="-1"></a>            losses[i] <span class="op">=</span> loss</span>
+<span id="cb105-29"><a href="#cb105-29" aria-hidden="true" tabindex="-1"></a>            w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> wi</span>
+<span id="cb105-30"><a href="#cb105-30" aria-hidden="true" tabindex="-1"></a>        wi.grad.zero_()</span>
+<span id="cb105-31"><a href="#cb105-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, loss, w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="a1868ecb-daa0-4cdd-86dd-bbb4bcc49d71" class="cell" data-execution_count="65">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>(y_torch_loss, e_torch_loss, w_torch_loss) <span class="op">=</span> lms_torch_loss(x, d, eta, M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="92d00df7-6a3a-4b89-824a-92dd7ac445b3" class="cell" data-execution_count="66">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>plot_ws(w_torch_loss.numpy(), w_lms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="t_pytorch_topicos_files/figure-html/cell-67-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="blocos-para-otimizadores" class="level3">
+<h3 class="anchored" data-anchor-id="blocos-para-otimizadores">Blocos para otimizadores</h3>
+<ul>
+<li>O PyTorch disponibiliza diversos blocos para a representação de otimizadores: <a href="https://pytorch.org/docs/stable/optim.html#algorithms">https://pytorch.org/docs/stable/optim.html#algorithms</a>;</li>
+<li>Para o caso do otimizador com o algoritmo <em>backpropagation</em> tradicional, chamado de <em>Stochastic Gradient Descent</em>, utilizamos o bloco <code>nn.SGD</code>;</li>
+<li>A atualização dos pesos do otimizador é feita chamando o método <code>.step()</code>.</li>
+</ul>
+<div id="c500108d-98d0-4b7f-a0c1-d9173c158173" class="cell" data-execution_count="67">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms_torch_optim(x, d, eta, M):</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>    xM <span class="op">=</span> torch.zeros((M, <span class="dv">1</span>))</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>    wi <span class="op">=</span> torch.zeros((<span class="dv">1</span>, M), requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> torch.zeros(N <span class="op">+</span> <span class="dv">1</span>, M)</span>
+<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-9"><a href="#cb108-9" aria-hidden="true" tabindex="-1"></a>    loss_function <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb108-10"><a href="#cb108-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-11"><a href="#cb108-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Novo</span></span>
+<span id="cb108-12"><a href="#cb108-12" aria-hidden="true" tabindex="-1"></a>    optimizer <span class="op">=</span> torch.optim.SGD([wi], lr<span class="op">=</span>eta<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb108-13"><a href="#cb108-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb108-14"><a href="#cb108-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb108-15"><a href="#cb108-15" aria-hidden="true" tabindex="-1"></a>        xM <span class="op">=</span> torch.vstack((x[i : i <span class="op">+</span> <span class="dv">1</span>, [<span class="dv">0</span>]], xM[<span class="dv">0</span> : M <span class="op">-</span> <span class="dv">1</span>, [<span class="dv">0</span>]]))</span>
+<span id="cb108-16"><a href="#cb108-16" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> wi <span class="op">@</span> xM</span>
+<span id="cb108-17"><a href="#cb108-17" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss_function(yi.squeeze(), d[i].squeeze())</span>
+<span id="cb108-18"><a href="#cb108-18" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb108-19"><a href="#cb108-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-20"><a href="#cb108-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Novo</span></span>
+<span id="cb108-21"><a href="#cb108-21" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb108-22"><a href="#cb108-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb108-23"><a href="#cb108-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():            </span>
+<span id="cb108-24"><a href="#cb108-24" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb108-25"><a href="#cb108-25" aria-hidden="true" tabindex="-1"></a>            <span class="co"># wi[:] = wi[:] - eta/2 * wi.grad</span></span>
+<span id="cb108-26"><a href="#cb108-26" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb108-27"><a href="#cb108-27" aria-hidden="true" tabindex="-1"></a>            y[i] <span class="op">=</span> yi</span>
+<span id="cb108-28"><a href="#cb108-28" aria-hidden="true" tabindex="-1"></a>            losses[i] <span class="op">=</span> loss</span>
+<span id="cb108-29"><a href="#cb108-29" aria-hidden="true" tabindex="-1"></a>            w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> wi</span>
+<span id="cb108-30"><a href="#cb108-30" aria-hidden="true" tabindex="-1"></a>        wi.grad.zero_()</span>
+<span id="cb108-31"><a href="#cb108-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, loss, w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fe986a6f-a190-4f44-b5b1-deff7f966126" class="cell" data-execution_count="68">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>(y_torch_optim, e_torch_optim, w_torch_optim) <span class="op">=</span> lms_torch_optim(x, d, eta, M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="1cd207e8-8527-42d5-b553-038d6d648a9d" class="cell" data-execution_count="69">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb110" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>plot_ws(w_torch_optim.numpy(), w_lms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="t_pytorch_topicos_files/figure-html/cell-70-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="uso-de-objetos-representando-modelos-pytorch" class="level3">
+<h3 class="anchored" data-anchor-id="uso-de-objetos-representando-modelos-pytorch">Uso de objetos representando modelos PyTorch</h3>
+<ul>
+<li>Os modelos PyTorch são construídos com a definição de classes que herdam de <code>nn.module</code>;</li>
+<li>No método <code>__init__()</code>, devem ser criados os elementos que compõem o modelo. Nesse caso, vamos utilizar apenas um objeto representando parâmetros genéricos;</li>
+<li>O método <code>forward()</code> define como é calculada a saída a partir da entrada, nesse caso chamada de <code>xM</code>;</li>
+<li>Após a criação da classe, instancia-se um objeto para representar o modelo;
+<ul>
+<li>A saída do modelo é calculada utilizando este objeto.</li>
+</ul></li>
+<li>Assim como feito anteriormente, é necessário zerar os gradientes do modelo a cada iteração;
+<ul>
+<li>É usual fazer isso no início do loop de treinamento.</li>
+</ul></li>
+</ul>
+<div id="f9cf7d17-249f-49e4-8ba1-e670ef183f54" class="cell" data-execution_count="70">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Novo</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LMS(nn.Module):</span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wi <span class="op">=</span> nn.Parameter(torch.zeros((<span class="dv">1</span>, M), requires_grad<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, xM):</span>
+<span id="cb111-8"><a href="#cb111-8" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.wi <span class="op">@</span> xM</span>
+<span id="cb111-9"><a href="#cb111-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> output</span>
+<span id="cb111-10"><a href="#cb111-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-11"><a href="#cb111-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Novo</span></span>
+<span id="cb111-12"><a href="#cb111-12" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LMS()</span>
+<span id="cb111-13"><a href="#cb111-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-14"><a href="#cb111-14" aria-hidden="true" tabindex="-1"></a><span class="co"># def lms_torch_optim(x, d, eta, M):</span></span>
+<span id="cb111-15"><a href="#cb111-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms_torch_model(x, d, eta, M, model):</span>
+<span id="cb111-16"><a href="#cb111-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-17"><a href="#cb111-17" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb111-18"><a href="#cb111-18" aria-hidden="true" tabindex="-1"></a>    xM <span class="op">=</span> torch.zeros((M, <span class="dv">1</span>))</span>
+<span id="cb111-19"><a href="#cb111-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb111-20"><a href="#cb111-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wi = torch.zeros((1, M), requires_grad=True)</span></span>
+<span id="cb111-21"><a href="#cb111-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb111-22"><a href="#cb111-22" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb111-23"><a href="#cb111-23" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb111-24"><a href="#cb111-24" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> torch.zeros(N <span class="op">+</span> <span class="dv">1</span>, M)</span>
+<span id="cb111-25"><a href="#cb111-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-26"><a href="#cb111-26" aria-hidden="true" tabindex="-1"></a>    loss_function <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb111-27"><a href="#cb111-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-28"><a href="#cb111-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">#optimizer = torch.optim.SGD([wi], lr=eta/2)</span></span>
+<span id="cb111-29"><a href="#cb111-29" aria-hidden="true" tabindex="-1"></a>    optimizer <span class="op">=</span> torch.optim.SGD(model.parameters(), lr<span class="op">=</span>eta<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb111-30"><a href="#cb111-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb111-31"><a href="#cb111-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb111-32"><a href="#cb111-32" aria-hidden="true" tabindex="-1"></a>        xM <span class="op">=</span> torch.vstack((x[i : i <span class="op">+</span> <span class="dv">1</span>, [<span class="dv">0</span>]], xM[<span class="dv">0</span> : M <span class="op">-</span> <span class="dv">1</span>, [<span class="dv">0</span>]]))</span>
+<span id="cb111-33"><a href="#cb111-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-34"><a href="#cb111-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># yi = wi @ xM</span></span>
+<span id="cb111-35"><a href="#cb111-35" aria-hidden="true" tabindex="-1"></a>        model.zero_grad()</span>
+<span id="cb111-36"><a href="#cb111-36" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> model(xM)</span>
+<span id="cb111-37"><a href="#cb111-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-38"><a href="#cb111-38" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss_function(yi.squeeze(), d[i].squeeze())</span>
+<span id="cb111-39"><a href="#cb111-39" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb111-40"><a href="#cb111-40" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb111-41"><a href="#cb111-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb111-42"><a href="#cb111-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():            </span>
+<span id="cb111-43"><a href="#cb111-43" aria-hidden="true" tabindex="-1"></a>            y[i] <span class="op">=</span> yi</span>
+<span id="cb111-44"><a href="#cb111-44" aria-hidden="true" tabindex="-1"></a>            losses[i] <span class="op">=</span> loss</span>
+<span id="cb111-45"><a href="#cb111-45" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb111-46"><a href="#cb111-46" aria-hidden="true" tabindex="-1"></a>            <span class="co"># w[i + 1, :] = wi</span></span>
+<span id="cb111-47"><a href="#cb111-47" aria-hidden="true" tabindex="-1"></a>            w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> model.wi.clone()</span>
+<span id="cb111-48"><a href="#cb111-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-49"><a href="#cb111-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># wi.grad.zero_()        </span></span>
+<span id="cb111-50"><a href="#cb111-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb111-51"><a href="#cb111-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, loss, w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="62811d4e-6cb1-4da5-8ed0-e6ef24ad65c7" class="cell" data-execution_count="71">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb112" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>(y_torch_model, e_torch_model, w_torch_model) <span class="op">=</span> lms_torch_model(x, d, eta, M, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="212ede4f-a4d4-45fa-a519-f230c2bcceea" class="cell" data-execution_count="72">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb113" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>plot_ws(w_torch_model.numpy(), w_lms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="t_pytorch_topicos_files/figure-html/cell-73-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="uso-de-blocos-pytorch-para-a-composição-de-modelos" class="level3">
+<h3 class="anchored" data-anchor-id="uso-de-blocos-pytorch-para-a-composição-de-modelos">Uso de blocos PyTorch para a composição de modelos</h3>
+<ul>
+<li>No último exemplo, construímos um modelo PyTorch baseado em um conjunto de parâmetros configurados com <code>nn.Parameter</code>.
+<ul>
+<li>No entanto, o PyTorch conta com inúmeros blocos para a composição de modelos como blocos lineares e funções de ativação para a composição de camadas de redes MLP;</li>
+<li>Ref.: <a href="https://pytorch.org/docs/stable/nn.html">https://pytorch.org/docs/stable/nn.html</a>.</li>
+</ul></li>
+<li>No caso do LMS, podemos utilizar o bloco <code>nn.Linear</code>.</li>
+</ul>
+<div id="bec21325-c58b-4d44-bebf-58e7ee249a93" class="cell" data-execution_count="73">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># class LMS(nn.Module):</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     def __init__(self):</span></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         super().__init__()</span></span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         self.wi = nn.Parameter(torch.zeros((1, M), requires_grad=True))</span></span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     def forward(self, xM):</span></span>
+<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a><span class="co">#         output = self.wi @ xM</span></span>
+<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a><span class="co">#         return output</span></span>
+<span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LMS(nn.Module):</span>
+<span id="cb114-11"><a href="#cb114-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb114-12"><a href="#cb114-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb114-13"><a href="#cb114-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.l1 <span class="op">=</span> nn.Linear(M, <span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>)        </span>
+<span id="cb114-14"><a href="#cb114-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb114-15"><a href="#cb114-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb114-16"><a href="#cb114-16" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.l1(x.squeeze())</span>
+<span id="cb114-17"><a href="#cb114-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> output</span>
+<span id="cb114-18"><a href="#cb114-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-19"><a href="#cb114-19" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LMS()</span>
+<span id="cb114-20"><a href="#cb114-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-21"><a href="#cb114-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms_torch_model_2(x, d, eta, M, model):</span>
+<span id="cb114-22"><a href="#cb114-22" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb114-23"><a href="#cb114-23" aria-hidden="true" tabindex="-1"></a>    xM <span class="op">=</span> torch.zeros((M, <span class="dv">1</span>))</span>
+<span id="cb114-24"><a href="#cb114-24" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb114-25"><a href="#cb114-25" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb114-26"><a href="#cb114-26" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> torch.zeros(N <span class="op">+</span> <span class="dv">1</span>, M)</span>
+<span id="cb114-27"><a href="#cb114-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-28"><a href="#cb114-28" aria-hidden="true" tabindex="-1"></a>    loss_function <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb114-29"><a href="#cb114-29" aria-hidden="true" tabindex="-1"></a>    optimizer <span class="op">=</span> torch.optim.SGD(model.parameters(), lr<span class="op">=</span>eta<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb114-30"><a href="#cb114-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb114-31"><a href="#cb114-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb114-32"><a href="#cb114-32" aria-hidden="true" tabindex="-1"></a>        xM <span class="op">=</span> torch.vstack((x[i : i <span class="op">+</span> <span class="dv">1</span>, [<span class="dv">0</span>]], xM[<span class="dv">0</span> : M <span class="op">-</span> <span class="dv">1</span>, [<span class="dv">0</span>]]))</span>
+<span id="cb114-33"><a href="#cb114-33" aria-hidden="true" tabindex="-1"></a>        model.zero_grad()</span>
+<span id="cb114-34"><a href="#cb114-34" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> model(xM)</span>
+<span id="cb114-35"><a href="#cb114-35" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss_function(yi.squeeze(), d[i].squeeze())</span>
+<span id="cb114-36"><a href="#cb114-36" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb114-37"><a href="#cb114-37" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb114-38"><a href="#cb114-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb114-39"><a href="#cb114-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():            </span>
+<span id="cb114-40"><a href="#cb114-40" aria-hidden="true" tabindex="-1"></a>            y[i] <span class="op">=</span> yi</span>
+<span id="cb114-41"><a href="#cb114-41" aria-hidden="true" tabindex="-1"></a>            losses[i] <span class="op">=</span> loss</span>
+<span id="cb114-42"><a href="#cb114-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-43"><a href="#cb114-43" aria-hidden="true" tabindex="-1"></a>            <span class="co"># w[i + 1, :] = model.wi.clone()</span></span>
+<span id="cb114-44"><a href="#cb114-44" aria-hidden="true" tabindex="-1"></a>            w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> model.l1.weight.clone()</span>
+<span id="cb114-45"><a href="#cb114-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-46"><a href="#cb114-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, loss, w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="8c7e2e78-fb06-4959-b557-dd4ea00d716f" class="cell" data-execution_count="74">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb115" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>(y_torch_model_2, e_torch_model_2, w_torch_model_2) <span class="op">=</span> lms_torch_model_2(x, d, eta, M, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="db2714e1-9d65-4bd3-8127-24eed7a77743" class="cell" data-execution_count="75">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>plot_ws(w_torch_model_2.numpy(), w_lms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="t_pytorch_topicos_files/figure-html/cell-76-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>As curvas de evolução dos pesos não coincidem com as anteriores, neste caso.
+<ul>
+<li>Isso ocorre por conta da inicialialização dos pesos utilizada pelo bloco <code>nn.Linear</code>que não são inicializados com zeros, conforme descrito na <a href="https://pytorch.org/docs/stable/generated/torch.nn.Linear.html">documentação</a>.</li>
+</ul></li>
+<li>Para obter o mesmo comportamento, é necessário inicializar os pesos com zeros:</li>
+</ul>
+<div id="e142e6ab-3495-4acc-9361-926dd43301a7" class="cell" data-execution_count="76">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb117" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LMS(nn.Module):</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.l1 <span class="op">=</span> nn.Linear(M, <span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.l1(x.squeeze())</span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> output</span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Novo</span></span>
+<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> weights_init(m):</span>
+<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a>    classname <span class="op">=</span> m.<span class="va">__class__</span>.<span class="va">__name__</span>    </span>
+<span id="cb117-13"><a href="#cb117-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> classname.find(<span class="st">'Linear'</span>) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb117-14"><a href="#cb117-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> m.weight <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb117-15"><a href="#cb117-15" aria-hidden="true" tabindex="-1"></a>            <span class="co">#torch.nn.init.xavier_normal_(m.weight)</span></span>
+<span id="cb117-16"><a href="#cb117-16" aria-hidden="true" tabindex="-1"></a>            torch.nn.init.zeros_(m.weight)</span>
+<span id="cb117-17"><a href="#cb117-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> m.bias <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb117-18"><a href="#cb117-18" aria-hidden="true" tabindex="-1"></a>            torch.nn.init.zeros_(m.bias)</span>
+<span id="cb117-19"><a href="#cb117-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-20"><a href="#cb117-20" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LMS()</span>
+<span id="cb117-21"><a href="#cb117-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-22"><a href="#cb117-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Novo</span></span>
+<span id="cb117-23"><a href="#cb117-23" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">apply</span>(weights_init)</span>
+<span id="cb117-24"><a href="#cb117-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-25"><a href="#cb117-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-26"><a href="#cb117-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lms_torch_model_3(x, d, eta, M, model):</span>
+<span id="cb117-27"><a href="#cb117-27" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb117-28"><a href="#cb117-28" aria-hidden="true" tabindex="-1"></a>    xM <span class="op">=</span> torch.zeros((M, <span class="dv">1</span>))</span>
+<span id="cb117-29"><a href="#cb117-29" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb117-30"><a href="#cb117-30" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> torch.zeros((N, <span class="dv">1</span>))</span>
+<span id="cb117-31"><a href="#cb117-31" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> torch.zeros(N <span class="op">+</span> <span class="dv">1</span>, M)</span>
+<span id="cb117-32"><a href="#cb117-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-33"><a href="#cb117-33" aria-hidden="true" tabindex="-1"></a>    loss_function <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb117-34"><a href="#cb117-34" aria-hidden="true" tabindex="-1"></a>    optimizer <span class="op">=</span> torch.optim.SGD(model.parameters(), lr<span class="op">=</span>eta<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb117-35"><a href="#cb117-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb117-36"><a href="#cb117-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb117-37"><a href="#cb117-37" aria-hidden="true" tabindex="-1"></a>        xM <span class="op">=</span> torch.vstack((x[i : i <span class="op">+</span> <span class="dv">1</span>, [<span class="dv">0</span>]], xM[<span class="dv">0</span> : M <span class="op">-</span> <span class="dv">1</span>, [<span class="dv">0</span>]]))</span>
+<span id="cb117-38"><a href="#cb117-38" aria-hidden="true" tabindex="-1"></a>        model.zero_grad()</span>
+<span id="cb117-39"><a href="#cb117-39" aria-hidden="true" tabindex="-1"></a>        yi <span class="op">=</span> model(xM)</span>
+<span id="cb117-40"><a href="#cb117-40" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss_function(yi.squeeze(), d[i].squeeze())</span>
+<span id="cb117-41"><a href="#cb117-41" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb117-42"><a href="#cb117-42" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb117-43"><a href="#cb117-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb117-44"><a href="#cb117-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():            </span>
+<span id="cb117-45"><a href="#cb117-45" aria-hidden="true" tabindex="-1"></a>            y[i] <span class="op">=</span> yi</span>
+<span id="cb117-46"><a href="#cb117-46" aria-hidden="true" tabindex="-1"></a>            losses[i] <span class="op">=</span> loss            </span>
+<span id="cb117-47"><a href="#cb117-47" aria-hidden="true" tabindex="-1"></a>            w[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> model.l1.weight.clone()</span>
+<span id="cb117-48"><a href="#cb117-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y, loss, w</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="975af5bd-258a-42bc-a75b-ff1babf745f1" class="cell" data-execution_count="77">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>(y_torch_model_3, e_torch_model_3, w_torch_model_3) <span class="op">=</span> lms_torch_model_3(x, d, eta, M, model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="3f930ed2-460d-4f95-b185-21ee2e8860ed" class="cell" data-execution_count="78">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb119" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>plot_ws(w_torch_model_3.numpy(), w_lms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="t_pytorch_topicos_files/figure-html/cell-79-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</div>
+
+
+
+</main> <!-- /main -->
+<script>
+var custom_title = document.querySelectorAll('.custom .theorem-title');
+
+for (let i = 0; i < custom_title.length; i++ ) {
+   var mod_name = custom_title[i].innerHTML;
+   custom_title[i].innerHTML = mod_name.replace("Exemplo", "Algoritmo");
+};
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.js" defer="true"></script>
+</body></html>
